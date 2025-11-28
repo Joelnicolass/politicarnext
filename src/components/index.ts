@@ -1,7 +1,8 @@
-export { CardView } from "./CardView";
-export { DeckGrid } from "./DeckGrid";
-export { GameOverScreen } from "./GameOver";
-export { ObjectiveItem } from "./ObjetivesItem";
-export { StatBar } from "./StatsBar";
-export { LoadingSpinner } from "./LoadingSpinner";
-export { DeckCard } from "./DeckCard";
+export * from "./CardView";
+export * from "./DeckCard";
+export * from "./DeckGrid";
+export * from "./GameOver";
+export * from "./LoadingSpinner";
+export * from "./ObjetivesItem";
+export * from "./StatsBar";
+export * from "./TinderCard/TinderCard";
