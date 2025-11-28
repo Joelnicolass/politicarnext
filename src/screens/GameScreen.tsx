@@ -61,37 +61,48 @@ export default function GameScreen({
   };
 
   // Logic to process the turn
-  const resolveTurn = (choice: Choice) => {
-    updateStats(choice.effect);
-    if (choice.tags) checkObjectives(choice.tags);
+  const resolveTurn = useCallback(
+    (choice: Choice) => {
+      updateStats(choice.effect);
+      if (choice.tags) checkObjectives(choice.tags);
 
-    let nextEffects = [...activeEffects];
-    if (choice.statusEffect) {
-      nextEffects.push({ ...choice.statusEffect });
-      setTurnLog(`¡Activado: ${choice.statusEffect.name}!`);
-    } else {
-      setTurnLog(null);
-    }
+      let nextEffects = [...activeEffects];
+      if (choice.statusEffect) {
+        nextEffects.push({ ...choice.statusEffect });
+        setTurnLog(`¡Activado: ${choice.statusEffect.name}!`);
+      } else {
+        setTurnLog(null);
+      }
 
-    const passiveDelta = [0, 0, 0, 0];
-    nextEffects.forEach((eff) => {
-      passiveDelta[eff.stat] += eff.val;
-    });
-    updateStats(passiveDelta);
+      const passiveDelta = [0, 0, 0, 0];
+      nextEffects.forEach((eff) => {
+        passiveDelta[eff.stat] += eff.val;
+      });
+      updateStats(passiveDelta);
 
-    nextEffects = nextEffects
-      .map((e) => ({ ...e, duration: e.duration - 1 }))
-      .filter((e) => e.duration > 0);
+      nextEffects = nextEffects
+        .map((e) => ({ ...e, duration: e.duration - 1 }))
+        .filter((e) => e.duration > 0);
 
-    setActiveEffects(nextEffects);
-    setTurns((t) => t + 1);
-    setCurrentCard(pickCard());
-  };
+      setActiveEffects(nextEffects);
+      setTurns((t) => t + 1);
+      setCurrentCard(pickCard());
+    },
+    [activeEffects, updateStats, checkObjectives, pickCard]
+  );
 
-  const handleChoice = (dir: "left" | "right") => {
-    if (!currentCard) return;
-    resolveTurn(dir === "left" ? currentCard.left : currentCard.right);
-  };
+  const handleChoice = useCallback(
+    (dir: "left" | "right") => {
+      if (!currentCard) return;
+      resolveTurn(dir === "left" ? currentCard.left : currentCard.right);
+    },
+    [currentCard, resolveTurn]
+  );
+
+  // Memoize the preview callback to avoid unnecessary re-renders
+  const handlePreview = useCallback((side: "left" | "right" | null) => {
+    setPreviewSide(side);
+  }, []);
 
   // Calculate Diff for StatBars based on preview
   const currentDiffs = useMemo(() => {
@@ -194,7 +205,7 @@ export default function GameScreen({
             data={currentCard}
             characters={characters}
             onResolve={handleChoice}
-            onPreview={setPreviewSide}
+            onPreview={handlePreview}
           />
         )}
       </div>
@@ -204,8 +215,8 @@ export default function GameScreen({
         <div className="w-full max-w-md grid grid-cols-2 gap-4 mb-4 z-10">
           <button
             onClick={() => handleChoice("left")}
-            onMouseEnter={() => setPreviewSide("left")}
-            onMouseLeave={() => setPreviewSide(null)}
+            onMouseEnter={() => handlePreview("left")}
+            onMouseLeave={() => handlePreview(null)}
             className="cursor-pointer bg-stone-800 border-2 border-red-900 text-stone-300 p-4 rounded hover:bg-red-900 hover:text-white transition-colors flex flex-col items-center group active:scale-95"
           >
             <ArrowLeft
@@ -215,8 +226,8 @@ export default function GameScreen({
           </button>
           <button
             onClick={() => handleChoice("right")}
-            onMouseEnter={() => setPreviewSide("right")}
-            onMouseLeave={() => setPreviewSide(null)}
+            onMouseEnter={() => handlePreview("right")}
+            onMouseLeave={() => handlePreview(null)}
             className="cursor-pointer bg-stone-800 border-2 border-green-900 text-stone-300 p-4 rounded hover:bg-green-900 hover:text-white transition-colors flex flex-col items-center group active:scale-95"
           >
             <ArrowRight

@@ -6,6 +6,8 @@ import {
   useTransform,
   PanInfo,
   motion,
+  useMotionValueEvent,
+  useReducedMotion,
 } from "framer-motion";
 import {
   LucideIcon,
@@ -18,7 +20,7 @@ import {
   ArrowLeft,
   ArrowRight,
 } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { CardData, Character } from "@/types";
 
 export const CardView = ({
@@ -35,13 +37,12 @@ export const CardView = ({
   const x = useMotionValue(0);
   const controls = useAnimation();
   const lastSide = useRef<"left" | "right" | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const rotate = useTransform(x, [-200, 200], [-25, 25]);
-  const opacityRight = useTransform(x, [50, 150], [0, 1]);
-  const opacityLeft = useTransform(x, [-150, -50], [1, 0]);
-
-  const leftHintOpacity = useTransform(x, [0, 100], [1, 0.2]);
-  const rightHintOpacity = useTransform(x, [-100, 0], [0.2, 1]);
+  const opacityRight = useTransform(x, [0, 150], [0, 1]);
+  const opacityLeft = useTransform(x, [-150, 0], [1, 0]);
 
   const defaultCharacter: Character = {
     id: "min",
@@ -71,22 +72,23 @@ export const CardView = ({
     });
   }, [controls]);
 
-  // Handle Drag logic and report side changes to parent for stats preview
-  const handleDrag = (
-    _event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
-    const offsetX = info.offset.x;
+  // Use native Framer Motion event listener for optimal performance
+  useMotionValueEvent(x, "change", (latest) => {
+    if (!isDragging) return;
+
     let currentSide: "left" | "right" | null = null;
+    if (latest > 50) currentSide = "right";
+    else if (latest < -50) currentSide = "left";
 
-    if (offsetX > 50) currentSide = "right";
-    else if (offsetX < -50) currentSide = "left";
-
-    // Only update parent if side changed to avoid spamming re-renders
     if (currentSide !== lastSide.current) {
       lastSide.current = currentSide;
       onPreview(currentSide);
     }
+  });
+
+  // Handle Drag logic and report side changes to parent for stats preview
+  const handleDragStart = () => {
+    setIsDragging(true);
   };
 
   const handleDragEnd = async (
@@ -96,7 +98,7 @@ export const CardView = ({
     const threshold = 100;
     const velocityThreshold = 500;
 
-    // Clear preview
+    setIsDragging(false);
     onPreview(null);
     lastSide.current = null;
 
@@ -104,7 +106,7 @@ export const CardView = ({
       await controls.start({
         x: 500,
         opacity: 0,
-        transition: { duration: 0.2 },
+        transition: { duration: shouldReduceMotion ? 0.1 : 0.2 },
       });
       onResolve("right");
     } else if (
@@ -114,13 +116,15 @@ export const CardView = ({
       await controls.start({
         x: -500,
         opacity: 0,
-        transition: { duration: 0.2 },
+        transition: { duration: shouldReduceMotion ? 0.1 : 0.2 },
       });
       onResolve("left");
     } else {
       controls.start({
         x: 0,
-        transition: { type: "spring", stiffness: 300, damping: 20 },
+        transition: shouldReduceMotion
+          ? { duration: 0.2 }
+          : { type: "spring", stiffness: 300, damping: 20 },
       });
     }
   };
@@ -129,15 +133,24 @@ export const CardView = ({
     <motion.div
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.7}
-      onDrag={handleDrag}
+      dragElastic={0.5}
+      dragTransition={{ bounceStiffness: 600, bounceDamping: 20, power: 0.2 }}
+      dragMomentum={!shouldReduceMotion}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       animate={controls}
       style={{ x, rotate }}
       initial={{ scale: 0.8, opacity: 0 }}
       className="relative w-full max-w-md h-[450px] perspective-1000 cursor-grab active:cursor-grabbing"
     >
-      <div className="w-full h-full relative paper-texture border-4 border-stone-800 text-stone-900 p-4 flex flex-col card-shadow origin-bottom">
+      <div
+        className="w-full h-full relative paper-texture border-4 border-stone-800 text-stone-900 p-4 flex flex-col card-shadow origin-bottom"
+        style={{
+          willChange: isDragging ? "transform" : "auto",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
+        }}
+      >
         <motion.div
           style={{ opacity: opacityRight }}
           className="absolute top-10 left-10 border-4 border-green-700 text-green-700 font-bold text-4xl p-2 -rotate-12 z-20 pointer-events-none"
@@ -160,8 +173,16 @@ export const CardView = ({
           </div>
         </div>
 
-        <div className="h-40 bg-stone-800 mb-4 flex items-center justify-center overflow-hidden relative border-2 border-stone-900 grayscale contrast-150 pointer-events-none">
-          <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle,var(--color-stone-500)_1px,transparent_1px)] bg-size-[4px_4px]"></div>
+        <div
+          className="h-40 bg-stone-800 mb-4 flex items-center justify-center overflow-hidden relative border-2 border-stone-900 grayscale contrast-150 pointer-events-none"
+          style={{
+            transform: "translateZ(0)",
+            backfaceVisibility: "hidden",
+          }}
+        >
+          {!isDragging && (
+            <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle,var(--color-stone-500)_1px,transparent_1px)] bg-size-[4px_4px]"></div>
+          )}
           <IconCmp size={90} className="text-amber-100 opacity-80" />
 
           <span className="absolute bottom-2 text-stone-200 text-sm px-2 py-1">
@@ -176,18 +197,18 @@ export const CardView = ({
         </div>
 
         <div className="mt-4 flex justify-between text-xs font-mono uppercase text-stone-500 border-t border-stone-400 pt-2 pointer-events-none">
-          <motion.div
-            style={{ opacity: leftHintOpacity }}
-            className="flex items-center gap-1"
+          <div
+            className="flex items-center gap-1 transition-opacity"
+            style={{ opacity: isDragging ? 0.5 : 1 }}
           >
             <ArrowLeft size={14} /> {data.left.text}
-          </motion.div>
-          <motion.div
-            style={{ opacity: rightHintOpacity }}
-            className="flex items-center gap-1"
+          </div>
+          <div
+            className="flex items-center gap-1 transition-opacity"
+            style={{ opacity: isDragging ? 0.5 : 1 }}
           >
             {data.right.text} <ArrowRight size={14} />
-          </motion.div>
+          </div>
         </div>
       </div>
     </motion.div>
