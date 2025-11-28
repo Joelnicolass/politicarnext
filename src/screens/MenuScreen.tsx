@@ -1,0 +1,96 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Play, Trophy, Settings, Info } from "lucide-react";
+import { useRouter } from "next/navigation";
+
+export default function MenuScreen() {
+  const router = useRouter();
+
+  const menuButtons = [
+    {
+      id: "play",
+      label: "Jugar",
+      icon: Play,
+      color: "bg-red-800 hover:bg-red-700",
+      action: () => router.push("/deck-selection"),
+    },
+    {
+      id: "achievements",
+      label: "Logros",
+      icon: Trophy,
+      color: "bg-amber-800 hover:bg-amber-700",
+      action: () => console.log("Próximamente..."),
+    },
+    {
+      id: "settings",
+      label: "Configuración",
+      icon: Settings,
+      color: "bg-stone-700 hover:bg-stone-600",
+      action: () => console.log("Próximamente..."),
+    },
+    {
+      id: "info",
+      label: "Créditos",
+      icon: Info,
+      color: "bg-stone-700 hover:bg-stone-600",
+      action: () => console.log("Próximamente..."),
+    },
+  ];
+
+  return (
+    <div className="crt h-screen w-full flex flex-col items-center justify-center p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="text-center mb-12"
+      >
+        <h1 className="font-propaganda text-6xl md:text-8xl text-red-600 tracking-tighter mb-4 drop-shadow-[0_0_30px_rgba(220,38,38,0.5)]">
+          EL MODELO 2.0
+        </h1>
+        <p className="font-typewriter text-stone-400 text-sm md:text-base">
+          Un simulador de política argentina
+        </p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="w-full max-w-sm space-y-4"
+      >
+        {menuButtons.map((button, index) => (
+          <motion.button
+            key={button.id}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 + index * 0.1 }}
+            onClick={button.action}
+            className={`w-full ${button.color} text-white p-4 rounded border-2 border-stone-900 font-propaganda text-xl transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95`}
+          >
+            <button.icon size={24} />
+            {button.label}
+          </motion.button>
+        ))}
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="absolute bottom-4 text-[10px] text-stone-600 font-mono opacity-50"
+      >
+        SISTEMA INTEGRADO DE GESTIÓN // v1.0 // STABLE
+      </motion.div>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Share+Tech+Mono&family=Special+Elite&display=swap');
+        .font-propaganda { font-family: 'Black Ops One', cursive; }
+        .font-typewriter { font-family: 'Special Elite', cursive; }
+        .font-tech { font-family: 'Share Tech Mono', monospace; }
+        .crt::before { content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); z-index: 50; background-size: 100% 2px, 3px 100%; pointer-events: none; }
+      `}</style>
+    </div>
+  );
+}
