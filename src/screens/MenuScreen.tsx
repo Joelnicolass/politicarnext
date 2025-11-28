@@ -39,17 +39,17 @@ export default function MenuScreen() {
   ];
 
   return (
-    <div className="crt h-screen w-full flex flex-col items-center justify-center p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
+    <div className="crt h-screen w-full flex flex-col items-center justify-center p-2 sm:p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="text-center mb-12"
+        className="text-center mb-6 sm:mb-12 px-2"
       >
-        <h1 className="font-propaganda text-6xl md:text-8xl text-red-600 tracking-tighter mb-4 drop-shadow-[0_0_30px_rgba(220,38,38,0.5)]">
+        <h1 className="font-propaganda text-4xl sm:text-6xl md:text-8xl text-red-600 tracking-tighter mb-2 sm:mb-4 drop-shadow-[0_0_30px_rgba(220,38,38,0.5)]">
           EL MODELO 2.0
         </h1>
-        <p className="font-typewriter text-stone-400 text-sm md:text-base">
+        <p className="font-typewriter text-stone-400 text-xs sm:text-sm md:text-base">
           Un simulador de política argentina
         </p>
       </motion.div>
@@ -58,7 +58,7 @@ export default function MenuScreen() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.5 }}
-        className="w-full max-w-sm space-y-4"
+        className="w-full max-w-sm px-4 space-y-3 sm:space-y-4"
       >
         {menuButtons.map((button, index) => (
           <motion.button
@@ -67,9 +67,9 @@ export default function MenuScreen() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 + index * 0.1 }}
             onClick={button.action}
-            className={`w-full ${button.color} text-white p-4 rounded border-2 border-stone-900 font-propaganda text-xl transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95`}
+            className={`w-full ${button.color} text-white p-3 sm:p-4 rounded border-2 border-stone-900 font-propaganda text-lg sm:text-xl transition-all duration-200 flex items-center justify-center gap-2 sm:gap-3 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95`}
           >
-            <button.icon size={24} />
+            <button.icon size={20} className="sm:w-6 sm:h-6" />
             {button.label}
           </motion.button>
         ))}
@@ -79,7 +79,7 @@ export default function MenuScreen() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute bottom-4 text-[10px] text-stone-600 font-mono opacity-50"
+        className="absolute bottom-2 sm:bottom-4 text-[8px] sm:text-[10px] text-stone-600 font-mono opacity-50"
       >
         SISTEMA INTEGRADO DE GESTIÓN // v1.0 // STABLE
       </motion.div>

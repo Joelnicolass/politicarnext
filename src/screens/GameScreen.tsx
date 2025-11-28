@@ -115,14 +115,14 @@ export default function GameScreen({
   const cardKey = currentCard ? `card-${currentCard.id}-${turns}` : "no-card";
 
   return (
-    <div className="crt h-screen w-full flex flex-col items-center justify-between p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
+    <div className="crt h-screen w-full flex flex-col items-center justify-between p-2 sm:p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
       {/* HUD: Stats */}
-      <div className="w-full max-w-md bg-stone-800 p-2 border-b-4 border-red-900 z-10 shadow-lg">
-        <div className="flex justify-between items-end mb-2">
-          <h1 className="text-red-600 font-propaganda text-2xl tracking-tighter">
+      <div className="w-full max-w-md bg-stone-800 p-1.5 sm:p-2 border-b-2 sm:border-b-4 border-red-900 z-10 shadow-lg">
+        <div className="flex justify-between items-end mb-1 sm:mb-2">
+          <h1 className="text-red-600 font-propaganda text-lg sm:text-2xl tracking-tighter">
             EL MODELO 2.0
           </h1>
-          <span className="font-tech text-xs text-stone-400">
+          <span className="font-tech text-[10px] sm:text-xs text-stone-400">
             TRIMESTRE: {turns}
           </span>
         </div>
@@ -166,8 +166,8 @@ export default function GameScreen({
       </div>
 
       {/* HUD: Objectives */}
-      <div className="w-full max-w-md mt-2 bg-stone-900/80 p-2 border border-stone-700 z-10">
-        <div className="text-[10px] text-stone-500 uppercase tracking-widest mb-1">
+      <div className="w-full max-w-md mt-1 sm:mt-2 bg-stone-900/80 p-1.5 sm:p-2 border border-stone-700 z-10">
+        <div className="text-[8px] sm:text-[10px] text-stone-500 uppercase tracking-widest mb-1">
           Objetivos del Gobierno
         </div>
         <div className="grid grid-cols-1 gap-1">
@@ -179,7 +179,7 @@ export default function GameScreen({
 
       {/* Notifications */}
       <motion.div
-        className="absolute top-1/2 -translate-y-[180px] w-full flex justify-center z-20 pointer-events-none"
+        className="absolute top-1/2 -translate-y-[120px] sm:-translate-y-[180px] w-full flex justify-center z-20 pointer-events-none px-2"
         key={`turnlog-${turns}`}
         animate={
           turnLog
@@ -191,14 +191,14 @@ export default function GameScreen({
         }
       >
         {turnLog && (
-          <div className="bg-stone-900 border border-amber-500 text-amber-500 px-4 py-2 font-bold font-typewriter shadow-xl effect-pill flex items-center gap-2">
-            <Zap size={16} /> {turnLog}
+          <div className="bg-stone-900 border border-amber-500 text-amber-500 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-base font-bold font-typewriter shadow-xl effect-pill flex items-center gap-2">
+            <Zap size={14} className="sm:w-4 sm:h-4" /> {turnLog}
           </div>
         )}
       </motion.div>
 
       {/* Card Area */}
-      <div className="flex-1 w-full flex flex-col items-center justify-center relative">
+      <div className="flex-1 w-full flex flex-col items-center justify-center relative overflow-hidden">
         {currentCard && !gameOver && (
           <CardView
             key={cardKey}
@@ -212,27 +212,27 @@ export default function GameScreen({
 
       {/* Controls */}
       {!gameOver && currentCard && (
-        <div className="w-full max-w-md grid grid-cols-2 gap-4 mb-4 z-10">
+        <div className="w-full max-w-md grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-4 z-10 px-2 sm:px-0">
           <button
             onClick={() => handleChoice("left")}
             onMouseEnter={() => handlePreview("left")}
             onMouseLeave={() => handlePreview(null)}
-            className="cursor-pointer bg-stone-800 border-2 border-red-900 text-stone-300 p-4 rounded hover:bg-red-900 hover:text-white transition-colors flex flex-col items-center group active:scale-95"
+            className="cursor-pointer bg-stone-800 border-2 border-red-900 text-stone-300 p-2 sm:p-4 rounded hover:bg-red-900 hover:text-white transition-colors flex flex-col items-center group active:scale-95"
           >
             <ArrowLeft
-              className="mb-1 group-hover:scale-110 transition-transform"
-              size={28}
+              className="mb-0 sm:mb-1 group-hover:scale-110 transition-transform"
+              size={24}
             />
           </button>
           <button
             onClick={() => handleChoice("right")}
             onMouseEnter={() => handlePreview("right")}
             onMouseLeave={() => handlePreview(null)}
-            className="cursor-pointer bg-stone-800 border-2 border-green-900 text-stone-300 p-4 rounded hover:bg-green-900 hover:text-white transition-colors flex flex-col items-center group active:scale-95"
+            className="cursor-pointer bg-stone-800 border-2 border-green-900 text-stone-300 p-2 sm:p-4 rounded hover:bg-green-900 hover:text-white transition-colors flex flex-col items-center group active:scale-95"
           >
             <ArrowRight
-              className="mb-1 group-hover:scale-110 transition-transform"
-              size={28}
+              className="mb-0 sm:mb-1 group-hover:scale-110 transition-transform"
+              size={24}
             />
           </button>
         </div>
@@ -248,7 +248,7 @@ export default function GameScreen({
         />
       )}
 
-      <div className="absolute bottom-2 text-[10px] text-stone-600 font-mono opacity-50 pointer-events-none">
+      <div className="absolute bottom-1 sm:bottom-2 text-[8px] sm:text-[10px] text-stone-600 font-mono opacity-50 pointer-events-none">
         SISTEMA INTEGRADO DE GESTIÓN // v1.0 // STABLE
       </div>
     </div>

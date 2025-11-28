@@ -39,37 +39,41 @@ export function DeckCard({
       onClick={() => deck.unlocked && onSelect(deck.id)}
       onMouseEnter={() => onHover(deck.id)}
       onMouseLeave={() => onHover(null)}
-      className={`paper-texture border-4 ${
+      className={`paper-texture border-2 sm:border-4 ${
         deck.unlocked
           ? "border-stone-800 cursor-pointer hover:border-red-800 hover:shadow-2xl hover:scale-105"
           : "border-stone-700 opacity-60 cursor-not-allowed"
-      } p-6 rounded-lg transition-all duration-300 relative ${
+      } p-4 sm:p-6 rounded-lg transition-all duration-300 relative ${
         isSelected ? "scale-105 shadow-2xl" : ""
       }`}
     >
       {/* Lock overlay */}
       {!deck.unlocked && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg">
-          <Lock size={48} className="text-stone-500" />
+          <Lock size={36} className="sm:w-12 sm:h-12 text-stone-500" />
         </div>
       )}
 
       {/* Thumbnail */}
-      <div className="text-6xl text-center mb-4">{deck.thumbnail}</div>
+      <div className="text-4xl sm:text-6xl text-center mb-3 sm:mb-4">
+        {deck.thumbnail}
+      </div>
 
       {/* Info */}
-      <h3 className="font-propaganda text-xl text-stone-900 mb-2 text-center">
+      <h3 className="font-propaganda text-lg sm:text-xl text-stone-900 mb-2 text-center">
         {deck.name}
       </h3>
-      <p className="font-typewriter text-sm text-stone-700 mb-3 text-center min-h-10">
+      <p className="font-typewriter text-xs sm:text-sm text-stone-700 mb-3 text-center min-h-10">
         {deck.description}
       </p>
 
       {/* Difficulty */}
       <div className="flex justify-center items-center gap-2">
-        <span className="text-xs text-stone-600 uppercase">Dificultad:</span>
+        <span className="text-[10px] sm:text-xs text-stone-600 uppercase">
+          Dificultad:
+        </span>
         <span
-          className={`text-xs font-bold uppercase ${
+          className={`text-[10px] sm:text-xs font-bold uppercase ${
             DIFFICULTY_COLORS[deck.difficulty]
           }`}
         >
