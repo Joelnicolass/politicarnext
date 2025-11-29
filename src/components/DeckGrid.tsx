@@ -23,7 +23,7 @@ export function DeckGrid({ decks }: DeckGridProps) {
   };
 
   return (
-    <div className="crt min-h-screen w-full flex flex-col items-center p-2 sm:p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-x-hidden">
+    <div className="crt min-h-dvh w-full flex flex-col items-center p-2 sm:p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-x-hidden">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}

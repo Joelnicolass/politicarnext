@@ -8,7 +8,13 @@ import { CardView } from "@/components/CardView";
 import { GameOverScreen } from "@/components/GameOver";
 import { ObjectiveItem } from "@/components/ObjetivesItem";
 import { StatBar } from "@/components/StatsBar";
-import { useGameStats, useObjectives, useEffectOnce, useDeck } from "@/hooks";
+import {
+  useGameStats,
+  useObjectives,
+  useEffectOnce,
+  useDeck,
+  useIsMobile,
+} from "@/hooks";
 import { motion } from "framer-motion";
 
 interface GameScreenProps {
@@ -118,6 +124,8 @@ export default function GameScreen({
 
   const cardKey = currentCard ? `card-${currentCard.id}-${turns}` : "no-card";
 
+  const isMobile = useIsMobile();
+
   if (gameOver) {
     return (
       <GameOverScreen
@@ -143,7 +151,7 @@ export default function GameScreen({
   }
 
   return (
-    <div className="crt h-screen w-full flex flex-col items-center justify-between p-2 sm:p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
+    <div className="crt h-dvh w-full flex flex-col items-center justify-between p-2 sm:p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
       {/* HUD: Stats */}
       <div className="w-full max-w-md bg-stone-800 p-1.5 sm:p-2 border-b-2 sm:border-b-4 border-red-900 z-10 shadow-lg">
         <div className="flex justify-between items-end mb-1 sm:mb-2">

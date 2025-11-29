@@ -39,7 +39,7 @@ export default function MenuScreen() {
   ];
 
   return (
-    <div className="crt h-screen w-full flex flex-col items-center justify-center p-2 sm:p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
+    <div className="crt h-dvh w-full flex flex-col items-center justify-center p-2 sm:p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}

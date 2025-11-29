@@ -14,7 +14,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-[#1a1815]">
+    <div className="h-dvh w-full flex items-center justify-center bg-[#1a1815]">
       <div className="text-center max-w-md p-8">
         <h2 className="font-propaganda text-2xl text-red-600 mb-4">
           ¡ERROR DEL SISTEMA!

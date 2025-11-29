@@ -13,7 +13,7 @@ export function LoadingSpinner({
   size = 48,
 }: LoadingSpinnerProps) {
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-[#1a1815]">
+    <div className="h-dvh w-full flex items-center justify-center bg-[#1a1815]">
       <div className="text-center">
         <motion.div
           animate={{ rotate: 360 }}
