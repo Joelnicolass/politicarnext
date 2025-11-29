@@ -8,14 +8,10 @@ import { CardView } from "@/components/CardView";
 import { GameOverScreen } from "@/components/GameOver";
 import { ObjectiveItem } from "@/components/ObjetivesItem";
 import { StatBar } from "@/components/StatsBar";
-import {
-  useGameStats,
-  useObjectives,
-  useEffectOnce,
-  useDeck,
-  useIsMobile,
-} from "@/hooks";
+import { useGameStats, useObjectives, useEffectOnce, useDeck } from "@/hooks";
 import { motion } from "framer-motion";
+import { APP_NAME } from "@/utils/constants";
+import Version from "@/components/Version";
 
 interface GameScreenProps {
   cards: CardData[];
@@ -124,8 +120,6 @@ export default function GameScreen({
 
   const cardKey = currentCard ? `card-${currentCard.id}-${turns}` : "no-card";
 
-  const isMobile = useIsMobile();
-
   if (gameOver) {
     return (
       <GameOverScreen
@@ -156,7 +150,7 @@ export default function GameScreen({
       <div className="w-full max-w-md bg-stone-800 p-1.5 sm:p-2 border-b-2 sm:border-b-4 border-red-900 z-10 shadow-lg">
         <div className="flex justify-between items-end mb-1 sm:mb-2">
           <h1 className="text-red-600 font-propaganda text-lg sm:text-2xl tracking-tighter">
-            EL MODELO 2.0
+            {APP_NAME}
           </h1>
           <div className="flex items-center gap-2">
             <span className="font-tech text-[8px] sm:text-[10px] text-stone-500">
@@ -279,9 +273,7 @@ export default function GameScreen({
         </div>
       )}
 
-      <div className="absolute bottom-1 sm:bottom-2 text-[8px] sm:text-[10px] text-stone-600 font-mono opacity-50 pointer-events-none">
-        SISTEMA INTEGRADO DE GESTIÓN // v1.0 // STABLE
-      </div>
+      <Version />
     </div>
   );
 }

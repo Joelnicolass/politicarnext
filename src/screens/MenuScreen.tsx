@@ -1,5 +1,7 @@
 "use client";
 
+import Version from "@/components/Version";
+import { APP_NAME } from "@/utils/constants";
 import { motion } from "framer-motion";
 import { Play, Trophy, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -49,7 +51,7 @@ export default function MenuScreen() {
         className="text-center mb-6 sm:mb-12 px-2"
       >
         <h1 className="font-propaganda text-4xl sm:text-6xl md:text-8xl text-red-600 tracking-tighter mb-2 sm:mb-4 drop-shadow-[0_0_30px_rgba(220,38,38,0.5)]">
-          EL MODELO 2.0
+          {APP_NAME}
         </h1>
         <p className="font-typewriter text-stone-400 text-xs sm:text-sm md:text-base">
           Un simulador de política argentina
@@ -91,7 +93,7 @@ export default function MenuScreen() {
         transition={{ delay: 1 }}
         className="absolute bottom-2 sm:bottom-4 text-[8px] sm:text-[10px] text-stone-600 font-mono opacity-50"
       >
-        SISTEMA INTEGRADO DE GESTIÓN // v1.0 // STABLE
+        <Version />
       </motion.div>
 
       <style>{`
