@@ -10,6 +10,7 @@ export interface Deck {
   characters: Record<string, Character>;
   objectivesPool: Omit<Objective, "completed">[];
   unlocked: boolean;
+  hidden?: boolean;
 }
 
 export interface DeckResponse {

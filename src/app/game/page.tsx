@@ -11,7 +11,7 @@ export default async function GamePage({ searchParams }: GamePageProps) {
   const deckId = params.deck || "default";
   const deck = await getDeckById(deckId);
 
-  if (!deck) {
+  if (!deck || !deck.unlocked) {
     notFound();
   }
 

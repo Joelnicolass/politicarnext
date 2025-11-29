@@ -55,16 +55,18 @@ export function DeckGrid({ decks }: DeckGridProps) {
         transition={{ delay: 0.2 }}
         className="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 pb-8 px-2 sm:px-0"
       >
-        {decks.map((deck, index) => (
-          <DeckCard
-            key={deck.id}
-            deck={deck}
-            index={index}
-            isSelected={selectedDeck === deck.id}
-            onSelect={handleDeckSelect}
-            onHover={setSelectedDeck}
-          />
-        ))}
+        {decks
+          .filter((deck) => !deck.hidden)
+          .map((deck, index) => (
+            <DeckCard
+              key={deck.id}
+              deck={deck}
+              index={index}
+              isSelected={selectedDeck === deck.id}
+              onSelect={handleDeckSelect}
+              onHover={setSelectedDeck}
+            />
+          ))}
       </motion.div>
     </div>
   );
