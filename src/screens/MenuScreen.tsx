@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Play, Trophy, Settings, Info } from "lucide-react";
+import { Play, Trophy, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function MenuScreen() {
@@ -21,13 +21,15 @@ export default function MenuScreen() {
       icon: Trophy,
       color: "bg-amber-800 hover:bg-amber-700",
       action: () => console.log("Próximamente..."),
+      disabled: true,
     },
     {
       id: "creator",
       label: "Creador de Decks",
-      icon: Trophy,
+      icon: undefined,
       color: "bg-yellow-600 hover:bg-yellow-500",
       action: () => console.log("Próximamente..."),
+      disabled: true,
     },
     {
       id: "info",
@@ -67,9 +69,17 @@ export default function MenuScreen() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 + index * 0.1 }}
             onClick={button.action}
-            className={`w-full ${button.color} text-white p-3 sm:p-4 rounded border-2 border-stone-900 font-propaganda text-lg sm:text-xl transition-all duration-200 flex items-center justify-center gap-2 sm:gap-3 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 cursor-pointer`}
+            className={`w-full ${
+              button.color
+            } text-white p-3 sm:p-4 rounded border-2 border-stone-900 font-propaganda text-lg sm:text-xl transition-all duration-200 flex items-center justify-center gap-2 sm:gap-3 shadow-lg hover:shadow-xl active:scale-95
+            ${
+              button.disabled
+                ? "opacity-50 cursor-not-allowed"
+                : "cursor-pointer hover:scale-105"
+            }`}
+            disabled={button.disabled}
           >
-            <button.icon size={20} className="sm:w-6 sm:h-6" />
+            {button.icon && <button.icon size={20} className="sm:w-6 sm:h-6" />}
             {button.label}
           </motion.button>
         ))}
