@@ -23,6 +23,7 @@ import {
 
 import { CardData, Character } from "@/types";
 import { useTypewriter, useIsMobile } from "@/hooks";
+import Image from "next/image";
 
 export const CardView = ({
   data,
@@ -145,8 +146,8 @@ export const CardView = ({
                 size={48}
                 className="sm:w-20 sm:h-20 text-amber-100 opacity-80"
               />
-
-              <span className="absolute bottom-1 sm:bottom-2 text-stone-200 text-xs sm:text-sm px-1 sm:px-2 py-0.5 sm:py-1">
+              {/*  <img src="img/6.png" className="" /> */}
+              <span className="absolute bottom-1 sm:bottom-2 text-stone-200 text-xs sm:text-sm px-1 sm:px-2 py-0.5 sm:py-1 bg-black/50">
                 {character.name}
               </span>
             </div>
