@@ -23,10 +23,10 @@ export default function MenuScreen() {
       action: () => console.log("Próximamente..."),
     },
     {
-      id: "settings",
-      label: "Configuración",
-      icon: Settings,
-      color: "bg-stone-700 hover:bg-stone-600",
+      id: "creator",
+      label: "Creador de Decks",
+      icon: Trophy,
+      color: "bg-yellow-600 hover:bg-yellow-500",
       action: () => console.log("Próximamente..."),
     },
     {
@@ -67,7 +67,7 @@ export default function MenuScreen() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 + index * 0.1 }}
             onClick={button.action}
-            className={`w-full ${button.color} text-white p-3 sm:p-4 rounded border-2 border-stone-900 font-propaganda text-lg sm:text-xl transition-all duration-200 flex items-center justify-center gap-2 sm:gap-3 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95`}
+            className={`w-full ${button.color} text-white p-3 sm:p-4 rounded border-2 border-stone-900 font-propaganda text-lg sm:text-xl transition-all duration-200 flex items-center justify-center gap-2 sm:gap-3 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 cursor-pointer`}
           >
             <button.icon size={20} className="sm:w-6 sm:h-6" />
             {button.label}
