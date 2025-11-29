@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { Objective } from "@/types";
 
 export const useObjectives = () => {
@@ -27,5 +27,15 @@ export const useObjectives = () => {
     );
   }, []);
 
-  return { objectives, initObjectives, checkObjectives };
+  const allCompleted = useMemo(
+    () => objectives.every((o) => o.completed),
+    [objectives]
+  );
+
+  return {
+    objectives,
+    allCompleted,
+    initObjectives,
+    checkObjectives,
+  };
 };

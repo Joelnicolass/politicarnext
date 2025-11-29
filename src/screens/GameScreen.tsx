@@ -8,9 +8,7 @@ import { CardView } from "@/components/CardView";
 import { GameOverScreen } from "@/components/GameOver";
 import { ObjectiveItem } from "@/components/ObjetivesItem";
 import { StatBar } from "@/components/StatsBar";
-import { useGameStats } from "@/hooks/useGameStats";
-import { useObjectives } from "@/hooks/useObjetives";
-import { useEffectOnce } from "@/hooks/useEffectOnce";
+import { useGameStats, useObjectives, useEffectOnce, useDeck } from "@/hooks";
 import { motion } from "framer-motion";
 
 interface GameScreenProps {
@@ -27,14 +25,12 @@ export default function GameScreen({
   const router = useRouter();
 
   const { stats, gameOver, updateStats, resetStats } = useGameStats();
-  const { objectives, initObjectives, checkObjectives } = useObjectives();
-
-  const pickCard = useCallback(() => {
-    const randomIdx = Math.floor(Math.random() * cards.length);
-    return cards[randomIdx];
-  }, [cards]);
+  const { objectives, allCompleted, initObjectives, checkObjectives } =
+    useObjectives();
 
   // Game State
+  const deck = useDeck({ initialCards: cards, shuffle: true });
+
   const [turns, setTurns] = useState(0);
   const [currentCard, setCurrentCard] = useState<CardData | null>(null);
   const [activeEffects, setActiveEffects] = useState<StatusEffect[]>([]);
@@ -43,8 +39,8 @@ export default function GameScreen({
 
   // Initial Boot
   useEffectOnce(() => {
+    setCurrentCard(deck.drawCard());
     initObjectives(objectivesPool);
-    setCurrentCard(pickCard());
   });
 
   const handleRestart = () => {
@@ -53,7 +49,10 @@ export default function GameScreen({
     setTurns(0);
     setActiveEffects([]);
     setTurnLog(null);
-    setCurrentCard(pickCard());
+
+    // Reset deck and draw first card
+    deck.reset();
+    setCurrentCard(deck.drawCard());
   };
 
   const handleBackToMenu = () => {
@@ -86,9 +85,12 @@ export default function GameScreen({
 
       setActiveEffects(nextEffects);
       setTurns((t) => t + 1);
-      setCurrentCard(pickCard());
+
+      // Discard current card and draw next one
+      const nextCard = deck.drawCard(currentCard);
+      setCurrentCard(nextCard);
     },
-    [activeEffects, updateStats, checkObjectives, pickCard]
+    [activeEffects, updateStats, checkObjectives, deck, currentCard]
   );
 
   const handleChoice = useCallback(
@@ -107,12 +109,38 @@ export default function GameScreen({
   // Calculate Diff for StatBars based on preview
   const currentDiffs = useMemo(() => {
     if (!previewSide || !currentCard) return [0, 0, 0, 0];
+
     const choice =
       previewSide === "left" ? currentCard.left : currentCard.right;
+
     return choice.effect;
   }, [previewSide, currentCard]);
 
   const cardKey = currentCard ? `card-${currentCard.id}-${turns}` : "no-card";
+
+  if (gameOver) {
+    return (
+      <GameOverScreen
+        reason={gameOver}
+        turns={turns}
+        objectives={objectives}
+        onRestart={handleRestart}
+        onBackToMenu={handleBackToMenu}
+      />
+    );
+  }
+
+  if (allCompleted) {
+    return (
+      <GameOverScreen
+        reason="¡Has cumplido todos los objetivos del gobierno!"
+        turns={turns}
+        objectives={objectives}
+        onRestart={handleRestart}
+        onBackToMenu={handleBackToMenu}
+      />
+    );
+  }
 
   return (
     <div className="crt h-screen w-full flex flex-col items-center justify-between p-2 sm:p-4 relative font-tech select-none bg-[#1a1815] text-[#dcdcdc] overflow-hidden">
@@ -122,9 +150,14 @@ export default function GameScreen({
           <h1 className="text-red-600 font-propaganda text-lg sm:text-2xl tracking-tighter">
             EL MODELO 2.0
           </h1>
-          <span className="font-tech text-[10px] sm:text-xs text-stone-400">
-            TRIMESTRE: {turns}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="font-tech text-[8px] sm:text-[10px] text-stone-500">
+              Cartas: {deck.availableCount}/{deck.totalCount}
+            </span>
+            <span className="font-tech text-[10px] sm:text-xs text-stone-400">
+              TRIMESTRE: {turns}
+            </span>
+          </div>
         </div>
 
         <StatBar
@@ -199,7 +232,7 @@ export default function GameScreen({
 
       {/* Card Area */}
       <div className="flex-1 w-full flex flex-col items-center justify-center relative overflow-hidden">
-        {currentCard && !gameOver && (
+        {currentCard && (
           <CardView
             key={cardKey}
             data={currentCard}
@@ -211,7 +244,7 @@ export default function GameScreen({
       </div>
 
       {/* Controls */}
-      {!gameOver && currentCard && (
+      {currentCard && (
         <div className="w-full max-w-md grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-4 z-10 px-2 sm:px-0">
           <button
             onClick={() => handleChoice("left")}
@@ -236,16 +269,6 @@ export default function GameScreen({
             />
           </button>
         </div>
-      )}
-
-      {gameOver && (
-        <GameOverScreen
-          reason={gameOver}
-          turns={turns}
-          objectives={objectives}
-          onRestart={handleRestart}
-          onBackToMenu={handleBackToMenu}
-        />
       )}
 
       <div className="absolute bottom-1 sm:bottom-2 text-[8px] sm:text-[10px] text-stone-600 font-mono opacity-50 pointer-events-none">

@@ -105,6 +105,81 @@ function getLocalDecks(): Deck[] {
       objectivesPool: [],
       unlocked: false,
     },
+    {
+      unlocked: false,
+      id: "testing",
+      name: "Testing Deck",
+      description: "A deck for testing purposes",
+      difficulty: "easy",
+      thumbnail: "🧪",
+      cards: [
+        {
+          id: 99991,
+          left: {
+            effect: [0, 0, 0, 0],
+            text: "Test Left Choice",
+            tags: ["test"],
+            statusEffect: undefined,
+          },
+          right: {
+            effect: [0, 0, 0, 0],
+            text: "Test Right Choice",
+            tags: ["test"],
+            statusEffect: undefined,
+          },
+          speaker: "test_character",
+          text: "This is a test card for testing purposes.",
+        },
+        {
+          id: 99992,
+          left: {
+            effect: [0, 0, 0, 0],
+            text: "Test Left Choice",
+            tags: ["test"],
+            statusEffect: undefined,
+          },
+          right: {
+            effect: [0, 0, 0, 0],
+            text: "Test Right Choice",
+            tags: ["test"],
+            statusEffect: undefined,
+          },
+          speaker: "test_character",
+          text: "This is a test card for testing purposes.",
+        },
+        {
+          id: 99993,
+          left: {
+            effect: [0, 0, 0, 0],
+            text: "Test Left Choice",
+            tags: ["test"],
+            statusEffect: undefined,
+          },
+          right: {
+            effect: [0, 0, 0, 0],
+            text: "Test Right Choice",
+            tags: ["test"],
+            statusEffect: undefined,
+          },
+          speaker: "test_character",
+          text: "This is a test card for testing purposes.",
+        },
+      ],
+      characters: {
+        test_character: {
+          id: "test_character",
+          name: "Test Character",
+          icon: "briefcase",
+        },
+      },
+      objectivesPool: [
+        {
+          id: "test_objective_1",
+          description: "Achieve testing excellence.",
+          requiredTag: "positive",
+        },
+      ],
+    },
   ];
 }
 
