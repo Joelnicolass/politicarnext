@@ -87,14 +87,7 @@ export default function MenuScreen() {
         ))}
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-2 sm:bottom-4 text-[8px] sm:text-[10px] text-stone-600 font-mono opacity-50"
-      >
-        <Version />
-      </motion.div>
+      <Version />
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Share+Tech+Mono&family=Special+Elite&display=swap');
