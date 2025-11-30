@@ -66,13 +66,19 @@ export const DEFAULT_CHARACTERS: Record<string, Character> = {
     id: "emp",
     name: "EL EMPRESARIO PREBENDARIO",
     icon: "trending-up",
-    img: "politico.png",
+    img: "politico_a.png",
   }, // Círculo Rojo
   gov: {
     id: "gov",
     name: "GOBERNADOR FEUDAL",
     icon: "map",
     img: "ministro_b.png",
+  }, // Provincias
+  jud: {
+    id: "jud",
+    name: "JUEZ CORRUPTO",
+    icon: "map",
+    img: "ministro_c.png",
   }, // Provincias
 };
 
@@ -338,7 +344,7 @@ export const DEFAULT_CARDS: CardData[] = [
   },
   {
     id: 9, // Objetivo: CIENCIA
-    speaker: "sci",
+    speaker: "jud",
     text: "Sin presupuesto, los científicos del CONICET se van a lavar platos a Europa.",
     left: {
       text: "Triplicar Presupuesto",
