@@ -10,11 +10,11 @@ import { ObjectiveItem } from "@/components/objectives_item";
 import { StatBar } from "@/components/stats_bar";
 import { motion } from "framer-motion";
 import { APP_NAME } from "@/utils/constants";
-import Version from "@/components/version";
 import {
   GameManagerProvider,
   useGameManager,
 } from "@/providers/game_manager.provider";
+import { Version } from "@/components/version";
 
 interface GameScreenProps {
   cards: CardData[];
