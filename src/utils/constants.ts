@@ -1,4 +1,4 @@
-export const VERSION = "2.1.1";
+export const VERSION = "2.3.1";
 export const APP_NAME = "EL AJUSTE";
 
 // Difficulty multipliers for card effects
