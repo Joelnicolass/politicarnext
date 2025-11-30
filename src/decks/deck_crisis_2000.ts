@@ -4,17 +4,47 @@ import { CardData, Character, Objective } from "@/types";
 // PERSONAJES (Arquetipos del 2001)
 // ------------------------------------------------------------------
 export const CRISIS_2000_CHARACTERS: Record<string, Character> = {
-  chu: { id: "chu", name: "EL PRESI 'CHUPETE'", icon: "frown" }, // De la Rúa
-  min: { id: "min", name: "EL SUPER MINISTRO", icon: "briefcase" }, // Cavallo
-  cab: { id: "cab", name: "EL CABEZÓN", icon: "user-check" }, // Duhalde
-  fmi: { id: "fmi", name: "AUDITORA DEL FMI", icon: "dollar-sign" }, // Anne Krueger
-  cac: { id: "cac", name: "SEÑORA BISMAN", icon: "bell" }, // Cacerolera
-  piq: { id: "piq", name: "EL PIQUETERO", icon: "users" }, // D'Elía/Castells
-  ban: { id: "ban", name: "BANQUERO GOLPISTA", icon: "trending-down" }, // Banca Extranjera
-  med: { id: "med", name: "MOVILERO EN VIVO", icon: "tv" }, // Cronica TV
-  pro: { id: "pro", name: "EL ADROGUÉ", icon: "mic" }, // Rodríguez Saá
-  gor: { id: "gor", name: "EL GORDO VALIJA", icon: "briefcase" }, // Sindicalismo
-  tia: { id: "tia", name: "TU TÍA MARTA", icon: "coffee" }, // Ahorrista estafada
+  chu: { id: "chu", name: "EL PRESI", icon: "frown", img: "politico_a.png" }, // De la Rúa
+  min: {
+    id: "min",
+    name: "EL SUPER MINISTRO",
+    icon: "briefcase",
+    img: "ministro_a.png",
+  }, // Cavallo
+  cab: {
+    id: "cab",
+    name: "EL CABEZÓN",
+    icon: "user-check",
+    img: "ministro_b.png",
+  }, // Duhalde
+  fmi: {
+    id: "fmi",
+    name: "AUDITORA DEL FMI",
+    icon: "dollar-sign",
+    img: "fmi.png",
+  }, // Anne Krueger
+  cac: { id: "cac", name: "SEÑORA BISMAN", icon: "bell", img: "vieja_a.png" }, // Cacerolera
+  piq: { id: "piq", name: "EL PIQUETERO", icon: "users", img: "cgt.png" }, // D'Elía/Castells
+  ban: {
+    id: "ban",
+    name: "BANQUERO GOLPISTA",
+    icon: "trending-down",
+    img: "gremio_a.png",
+  }, // Banca Extranjera
+  med: {
+    id: "med",
+    name: "MOVILERO EN VIVO",
+    icon: "tv",
+    img: "periosdistas.png",
+  }, // Cronica TV
+  pro: { id: "pro", name: "EL ADROGUÉ", icon: "mic", img: "ministro_c.png" }, // Rodríguez Saá
+  gor: {
+    id: "gor",
+    name: "EL GORDO VALIJA",
+    icon: "briefcase",
+    img: "gremio_a.png",
+  }, // Sindicalismo
+  tia: { id: "tia", name: "TU TÍA MARTA", icon: "coffee", img: "mujer_a.png" }, // Ahorrista estafada
 };
 
 // ------------------------------------------------------------------

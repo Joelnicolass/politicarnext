@@ -4,21 +4,76 @@ import { CardData, Character, Objective } from "@/types";
 // PERSONAJES (15 Arquetipos de la fauna política argentina)
 // ------------------------------------------------------------------
 export const DEFAULT_CHARACTERS: Record<string, Character> = {
-  leo: { id: "leo", name: "EL LEÓN PELUCA", icon: "zap" }, // El Presidente Libertario
-  jef: { id: "jef", name: "LA JEFA", icon: "crown" }, // La ex-Presidenta
-  min: { id: "min", name: 'MINISTRO "TOTO"', icon: "briefcase" }, // Economía
-  syn: { id: "syn", name: "EL GORDO DEL BOMBO", icon: "megaphone" }, // Sindicatos
-  fmi: { id: "fmi", name: "COMITIVA DEL FMI", icon: "dollar-sign" }, // Organismo Internacional
-  gen: { id: "gen", name: 'PATO "BULL"', icon: "shield" }, // Seguridad
-  pue: { id: "pue", name: "DOÑA ROSA", icon: "shopping-bag" }, // La gente común
-  med: { id: "med", name: "OPERADOR ENSOBRADO", icon: "tv" }, // Prensa
-  pan: { id: "pan", name: "EL PANQUEQUE", icon: "refresh-cw" }, // Político cambiante
-  cry: { id: "cry", name: "EL PIBE CRYPTO", icon: "smartphone" }, // Joven Tech/Libertario
-  cam: { id: "cam", name: "EL GAUCHO SOJERO", icon: "sun" }, // El Campo
-  jub: { id: "jub", name: "JUBILADO QUEJOSO", icon: "coffee" }, // Clase Pasiva
-  dog: { id: "dog", name: "CONAN (EL PERRO)", icon: "ghost" }, // Consejero Espiritual
-  emp: { id: "emp", name: "EL EMPRESARIO PREBENDARIO", icon: "trending-up" }, // Círculo Rojo
-  gov: { id: "gov", name: "GOBERNADOR FEUDAL", icon: "map" }, // Provincias
+  leo: { id: "leo", name: "EL PELUCA", icon: "zap", img: "milei.png" }, // El Presidente Libertario
+  jef: { id: "jef", name: "LA ABOGADA EXITOSA", icon: "crown", img: "cfk.png" }, // La ex-Presidenta
+  min: {
+    id: "min",
+    name: 'MINISTRO "TOTO"',
+    icon: "briefcase",
+    img: "ministro_a.png",
+  }, // Economía
+  syn: {
+    id: "syn",
+    name: "EL GORDO DEL BOMBO",
+    icon: "megaphone",
+    img: "cgt.png",
+  }, // Sindicatos
+  fmi: {
+    id: "fmi",
+    name: "COMITIVA DEL FMI",
+    icon: "dollar-sign",
+    img: "fmi.png",
+  }, // Organismo Internacional
+  gen: { id: "gen", name: 'PATO "BULL"', icon: "shield", img: "bullrich.png" }, // Seguridad
+  pue: {
+    id: "pue",
+    name: "DOÑA ROSA",
+    icon: "shopping-bag",
+    img: "mujer_a.png",
+  }, // La gente común
+  med: {
+    id: "med",
+    name: "OPERADOR ENSOBRADO",
+    icon: "tv",
+    img: "periodistas.png",
+  }, // Prensa
+  pan: {
+    id: "pan",
+    name: "EL PANQUEQUE",
+    icon: "refresh-cw",
+    img: "politico_a.png",
+  }, // Político cambiante
+  cry: {
+    id: "cry",
+    name: "EL PIBE CRYPTO",
+    icon: "smartphone",
+    img: "joven_a.png",
+  }, // Joven Tech/Libertario
+  cam: { id: "cam", name: "EL GAUCHO SOJERO", icon: "sun", img: "campo_a.png" }, // El Campo
+  jub: {
+    id: "jub",
+    name: "JUBILADO QUEJOSO",
+    icon: "coffee",
+    img: "viejo_a.png",
+  }, // Clase Pasiva
+  dog: {
+    id: "dog",
+    name: "CONAN (EL PERRO)",
+    icon: "ghost",
+    img: "perro_politico.png",
+  }, // Consejero Espiritual
+  emp: {
+    id: "emp",
+    name: "EL EMPRESARIO PREBENDARIO",
+    icon: "trending-up",
+    img: "politico.png",
+  }, // Círculo Rojo
+  gov: {
+    id: "gov",
+    name: "GOBERNADOR FEUDAL",
+    icon: "map",
+    img: "ministro_b.png",
+  }, // Provincias
 };
 
 // ------------------------------------------------------------------

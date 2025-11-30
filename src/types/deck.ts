@@ -86,4 +86,5 @@ export interface Character {
   id: string;
   name: string;
   icon: string;
+  img?: string;
 }

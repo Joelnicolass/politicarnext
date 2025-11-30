@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LucideIcon,
   Briefcase,
@@ -59,6 +60,7 @@ export const CardView = ({
   };
 
   const IconCmp: LucideIcon = iconMap[character.icon] || Briefcase;
+  const [imgError, setImgError] = useState(false);
 
   return (
     <div className="relative w-full max-w-[90vw] sm:max-w-md h-[350px] sm:h-[450px]">
@@ -126,6 +128,7 @@ export const CardView = ({
               <span className="font-bold tracking-widest uppercase text-[10px] sm:text-sm bg-stone-800 text-amber-100 px-1.5 sm:px-2 py-0.5 sm:py-1">
                 EXP #{data.id}
               </span>
+
               <div className="bg-red-800 text-white rounded-full p-0.5 sm:p-1">
                 <IconCmp size={16} className="sm:w-5 sm:h-5" />
               </div>
@@ -138,14 +141,37 @@ export const CardView = ({
                 backfaceVisibility: "hidden",
               }}
             >
-              {!isDragging && (
-                <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle,var(--color-stone-500)_1px,transparent_1px)] bg-size-[4px_4px]"></div>
+              <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle,var(--color-stone-500)_1px,transparent_1px)] bg-size-[4px_4px]"></div>
+
+              {imgError && (
+                <IconCmp
+                  size={48}
+                  className="sm:w-20 sm:h-20 text-amber-100 opacity-80"
+                />
               )}
-              <IconCmp
-                size={48}
-                className="sm:w-20 sm:h-20 text-amber-100 opacity-80"
-              />
-              {/*  <img src="img/6.png" className="" /> */}
+
+              {!imgError && (
+                <>
+                  <img
+                    src={`img/${character.img}`}
+                    alt={`${character.id}`}
+                    onError={() => setImgError(true)}
+                    className="w-full h-full object-contain select-none pointer-events-none"
+                  />
+                  {/* Overlay para oscurecer todos los bordes de la imagen */}
+                  <div className="absolute inset-0 pointer-events-none z-10">
+                    {/* Gradiente desde arriba */}
+                    <div className="absolute top-0 left-0 right-0 h-1/3 bg-linear-to-b from-black/60 via-transparent to-transparent" />
+                    {/* Gradiente desde abajo */}
+                    <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+                    {/* Gradiente desde la izquierda */}
+                    <div className="absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-black/50 via-transparent to-transparent" />
+                    {/* Gradiente desde la derecha */}
+                    <div className="absolute inset-y-0 right-0 w-1/3 bg-linear-to-l from-black/50 via-transparent to-transparent" />
+                  </div>
+                </>
+              )}
+
               <span className="absolute bottom-1 sm:bottom-2 text-stone-200 text-xs sm:text-sm px-1 sm:px-2 py-0.5 sm:py-1 bg-black/50">
                 {character.name}
               </span>
