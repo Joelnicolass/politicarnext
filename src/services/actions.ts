@@ -45,6 +45,7 @@ const ALL_CARDS = [
   ...CFK_CARDS,
   ...VLLC_CARDS,
   ...MENEM_CARDS,
+  ...QATAR_CARDS,
 ];
 
 const ALL_CHARACTERS = {
@@ -53,6 +54,7 @@ const ALL_CHARACTERS = {
   ...CFK_CHARACTERS,
   ...VLLC_CHARACTERS,
   ...MENEM_CHARACTERS,
+  ...QATAR_CHARACTERS,
 };
 
 const ALL_OBJECTIVES = [
@@ -61,6 +63,7 @@ const ALL_OBJECTIVES = [
   ...CFK_OBJECTIVES_POOL,
   ...VLLC_OBJECTIVES_POOL,
   ...MENEM_OBJECTIVES_POOL,
+  ...QATAR_OBJECTIVES,
 ];
 
 function getLocalDecks(): Deck[] {
