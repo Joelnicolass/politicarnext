@@ -20,6 +20,8 @@ import {
   MENEM_CHARACTERS,
   MENEM_OBJECTIVES_POOL,
 } from "@/utils/deck_menem";
+import { QATAR_CARDS, QATAR_CHARACTERS } from "@/utils/deck_qatar";
+import { QATAR_OBJECTIVES } from "../utils/deck_qatar";
 import {
   VLLC_CARDS,
   VLLC_CHARACTERS,
@@ -37,6 +39,30 @@ const API_BASE_URL =
 // LOCAL DATA HELPERS
 // ==========================================
 
+const ALL_CARDS = [
+  ...DEFAULT_CARDS,
+  ...CRISIS_2000_CARDS,
+  ...CFK_CARDS,
+  ...VLLC_CARDS,
+  ...MENEM_CARDS,
+];
+
+const ALL_CHARACTERS = {
+  ...DEFAULT_CHARACTERS,
+  ...CRISIS_2000_CHARACTERS,
+  ...CFK_CHARACTERS,
+  ...VLLC_CHARACTERS,
+  ...MENEM_CHARACTERS,
+};
+
+const ALL_OBJECTIVES = [
+  ...DEFAULT_OBJECTIVES,
+  ...CRISIS_2000_OBJECTIVES_POOL,
+  ...CFK_OBJECTIVES_POOL,
+  ...VLLC_OBJECTIVES_POOL,
+  ...MENEM_OBJECTIVES_POOL,
+];
+
 function getLocalDecks(): Deck[] {
   return [
     {
@@ -48,6 +74,17 @@ function getLocalDecks(): Deck[] {
       cards: DEFAULT_CARDS,
       characters: DEFAULT_CHARACTERS,
       objectivesPool: DEFAULT_OBJECTIVES,
+      unlocked: true,
+    },
+    {
+      id: "qatar22",
+      name: "Mundial 2022",
+      description: "El deck del mundial de Messi y del Beto",
+      difficulty: "easy",
+      thumbnail: "🏆🇦🇷🏆",
+      cards: QATAR_CARDS,
+      characters: QATAR_CHARACTERS,
+      objectivesPool: QATAR_OBJECTIVES,
       unlocked: true,
     },
     {
@@ -81,7 +118,7 @@ function getLocalDecks(): Deck[] {
       cards: VLLC_CARDS,
       characters: VLLC_CHARACTERS,
       objectivesPool: VLLC_OBJECTIVES_POOL,
-      unlocked: true,
+      unlocked: false,
     },
     {
       id: "menem",
@@ -92,6 +129,17 @@ function getLocalDecks(): Deck[] {
       cards: MENEM_CARDS,
       characters: MENEM_CHARACTERS,
       objectivesPool: MENEM_OBJECTIVES_POOL,
+      unlocked: false,
+    },
+    {
+      id: "all",
+      name: "El Deck Completo",
+      description: "Todos los decks combinados en uno solo",
+      difficulty: "hard",
+      thumbnail: "🎲",
+      cards: ALL_CARDS,
+      characters: ALL_CHARACTERS,
+      objectivesPool: ALL_OBJECTIVES,
       unlocked: true,
     },
     {
