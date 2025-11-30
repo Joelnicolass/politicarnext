@@ -1,6 +1,6 @@
 "use client";
 
-import { Version } from "@/components/version";
+import { Version } from "../components/version";
 import { APP_NAME } from "@/utils/constants";
 import { motion } from "framer-motion";
 import { Play, Trophy, Info } from "lucide-react";

@@ -14,7 +14,7 @@ import {
   GameManagerProvider,
   useGameManager,
 } from "@/providers/game_manager.provider";
-import { Version } from "@/components/version";
+import { Version } from "../components/version";
 
 interface GameScreenProps {
   cards: CardData[];
