@@ -75,10 +75,10 @@ export const CardView = ({
           <div className="relative px-4">
             {/* Texto de decisión */}
             <div
-              className={`relative border-4 font-bold text-1xl p-6 shadow-lg ${
+              className={`relative border-2 font-bold text-2xl p-6 shadow-lg ${
                 swipeDirection === "right"
-                  ? "border-green-600 text-green-600 bg-green-950/85"
-                  : "border-red-600 text-red-600 bg-red-950/85"
+                  ? "border-green-600 text-green-600 bg-stone-950/85"
+                  : "border-red-600 text-red-600 bg-stone-950/85"
               }`}
             >
               {swipeDirection === "right" ? data.right.text : data.left.text}
@@ -106,23 +106,20 @@ export const CardView = ({
               WebkitBackfaceVisibility: "hidden",
             }}
           >
-            {/* Desktop: Overlays en las esquinas */}
-            {!isMobile && (
-              <>
-                <motion.div
-                  style={{ opacity: opacityRight }}
-                  className="absolute top-6 sm:top-10 left-6 sm:left-10 border-2 sm:border-4 border-green-700 text-green-700 font-bold text-2xl sm:text-4xl p-1 sm:p-2 -rotate-12 z-20 pointer-events-none"
-                >
-                  {data.right.text}
-                </motion.div>
-                <motion.div
-                  style={{ opacity: opacityLeft }}
-                  className="absolute top-6 sm:top-10 right-6 sm:right-10 border-2 sm:border-4 border-red-700 text-red-700 font-bold text-2xl sm:text-4xl p-1 sm:p-2 rotate-12 z-20 pointer-events-none"
-                >
-                  {data.left.text}
-                </motion.div>
-              </>
-            )}
+            <>
+              <motion.div
+                style={{ opacity: opacityRight }}
+                className="absolute top-6 sm:top-10 left-6 sm:left-10 border-2 sm:border-4 border-green-700 text-green-700 font-bold text-2xl sm:text-4xl p-1 sm:p-2 -rotate-12 z-20 pointer-events-none"
+              >
+                {data.right.text}
+              </motion.div>
+              <motion.div
+                style={{ opacity: opacityLeft }}
+                className="absolute top-6 sm:top-10 right-6 sm:right-10 border-2 sm:border-4 border-red-700 text-red-700 font-bold text-2xl sm:text-4xl p-1 sm:p-2 rotate-12 z-20 pointer-events-none"
+              >
+                {data.left.text}
+              </motion.div>
+            </>
 
             <div className="border-b-2 border-stone-800 pb-1.5 sm:pb-2 mb-2 sm:mb-4 flex justify-between items-center pointer-events-none">
               <span className="font-bold tracking-widest uppercase text-[10px] sm:text-sm bg-stone-800 text-amber-100 px-1.5 sm:px-2 py-0.5 sm:py-1">
