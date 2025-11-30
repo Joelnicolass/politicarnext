@@ -42,6 +42,7 @@ export interface GameState {
   // UI State
   turnLog: string | null;
   previewSide: "left" | "right" | null;
+  previewDiffs: [number, number, number, number];
 
   // Dynamic content
   characters: Record<string, Character>;

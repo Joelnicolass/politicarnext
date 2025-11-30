@@ -96,6 +96,7 @@ export function GameManagerProvider({
     allObjectivesCompleted: false,
     turnLog: null,
     previewSide: null,
+    previewDiffs: [0, 0, 0, 0],
     characters,
     addedDeckIds: new Set(),
   };

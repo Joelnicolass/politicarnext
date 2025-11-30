@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { ArrowLeft, ArrowRight, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { CardData, Character, Objective } from "@/types";
@@ -30,16 +29,6 @@ function GameContent() {
   const handleBackToMenu = () => {
     router.push("/");
   };
-
-  // Calculate preview diffs
-  const currentDiffs = useMemo(() => {
-    if (!state.previewSide || !state.currentCard) return [0, 0, 0, 0];
-    const choice =
-      state.previewSide === "left"
-        ? state.currentCard.left
-        : state.currentCard.right;
-    return choice.effect;
-  }, [state.previewSide, state.currentCard]);
 
   const cardKey = state.currentCard
     ? `card-${state.currentCard.id}-${state.turns}`
@@ -91,7 +80,7 @@ function GameContent() {
 
         <StatBar
           value={state.stats[0]}
-          diff={currentDiffs[0]}
+          diff={state.previewDiffs[0]}
           activeEffects={state.activeEffects.filter((e) => e.stat === 0)}
           icon="users"
           color="text-blue-400"
@@ -100,7 +89,7 @@ function GameContent() {
         />
         <StatBar
           value={state.stats[1]}
-          diff={currentDiffs[1]}
+          diff={state.previewDiffs[1]}
           activeEffects={state.activeEffects.filter((e) => e.stat === 1)}
           icon="coins"
           color="text-green-400"
@@ -109,7 +98,7 @@ function GameContent() {
         />
         <StatBar
           value={state.stats[2]}
-          diff={currentDiffs[2]}
+          diff={state.previewDiffs[2]}
           activeEffects={state.activeEffects.filter((e) => e.stat === 2)}
           icon="shield"
           color="text-gray-400"
@@ -118,7 +107,7 @@ function GameContent() {
         />
         <StatBar
           value={state.stats[3]}
-          diff={currentDiffs[3]}
+          diff={state.previewDiffs[3]}
           activeEffects={state.activeEffects.filter((e) => e.stat === 3)}
           icon="megaphone"
           color="text-yellow-400"
