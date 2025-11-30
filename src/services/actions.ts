@@ -83,7 +83,7 @@ function getLocalDecks(): Deck[] {
       objectivesPool: CRISIS_2000_OBJECTIVES_POOL,
       unlocked: true,
     },
-    {
+    /* {
       id: "qatar22",
       name: "Mundial 2022",
       description: "El deck del mundial de Messi y del Beto",
@@ -137,7 +137,7 @@ function getLocalDecks(): Deck[] {
       characters: MENEM_CHARACTERS,
       objectivesPool: MENEM_OBJECTIVES_POOL,
       unlocked: false,
-    },
+    }, */
     {
       id: "mundial_78",
       name: "Mundial '78",
