@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getDeckById } from "@/services/actions";
-import GameScreen from "@/screens/GameScreen";
+import GameScreen from "@/screens/game_screen";
 
 interface GamePageProps {
   searchParams: Promise<{ deck?: string }>;

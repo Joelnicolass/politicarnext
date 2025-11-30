@@ -1,17 +1,20 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { ArrowLeft, ArrowRight, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { StatusEffect, CardData, Choice, Character, Objective } from "@/types";
-import { CardView } from "@/components/CardView";
-import { GameOverScreen } from "@/components/GameOver";
-import { ObjectiveItem } from "@/components/ObjetivesItem";
-import { StatBar } from "@/components/StatsBar";
-import { useGameStats, useObjectives, useEffectOnce, useDeck } from "@/hooks";
+import { CardData, Character, Objective } from "@/types";
+import { CardView } from "@/components/card_view";
+import { GameOverScreen } from "@/components/game_over";
+import { ObjectiveItem } from "@/components/objectives_item";
+import { StatBar } from "@/components/stats_bar";
 import { motion } from "framer-motion";
 import { APP_NAME } from "@/utils/constants";
-import Version from "@/components/Version";
+import Version from "@/components/version";
+import {
+  GameManagerProvider,
+  useGameManager,
+} from "@/providers/game_manager.provider";
 
 interface GameScreenProps {
   cards: CardData[];
@@ -19,126 +22,50 @@ interface GameScreenProps {
   objectivesPool: Omit<Objective, "completed">[];
 }
 
-export default function GameScreen({
-  cards,
-  characters,
-  objectivesPool,
-}: GameScreenProps) {
+function GameContent() {
   const router = useRouter();
-
-  const { stats, gameOver, updateStats, resetStats } = useGameStats();
-  const { objectives, allCompleted, initObjectives, checkObjectives } =
-    useObjectives();
-
-  // Game State
-  const deck = useDeck({ initialCards: cards, shuffle: true });
-
-  const [turns, setTurns] = useState(0);
-  const [currentCard, setCurrentCard] = useState<CardData | null>(null);
-  const [activeEffects, setActiveEffects] = useState<StatusEffect[]>([]);
-  const [turnLog, setTurnLog] = useState<string | null>(null);
-  const [previewSide, setPreviewSide] = useState<"left" | "right" | null>(null);
-
-  // Initial Boot
-  useEffectOnce(() => {
-    setCurrentCard(deck.drawCard());
-    initObjectives(objectivesPool);
-  });
-
-  const handleRestart = () => {
-    resetStats();
-    initObjectives(objectivesPool);
-    setTurns(0);
-    setActiveEffects([]);
-    setTurnLog(null);
-
-    // Reset deck and draw first card
-    deck.reset();
-    setCurrentCard(deck.drawCard());
-  };
+  const { state, handleChoice, handlePreview, resetGame, deckInfo } =
+    useGameManager();
 
   const handleBackToMenu = () => {
     router.push("/");
   };
 
-  // Logic to process the turn
-  const resolveTurn = useCallback(
-    (choice: Choice) => {
-      updateStats(choice.effect);
-      if (choice.tags) checkObjectives(choice.tags);
-
-      let nextEffects = [...activeEffects];
-      if (choice.statusEffect) {
-        nextEffects.push({ ...choice.statusEffect });
-        setTurnLog(`¡Activado: ${choice.statusEffect.name}!`);
-      } else {
-        setTurnLog(null);
-      }
-
-      const passiveDelta = [0, 0, 0, 0];
-      nextEffects.forEach((eff) => {
-        passiveDelta[eff.stat] += eff.val;
-      });
-      updateStats(passiveDelta);
-
-      nextEffects = nextEffects
-        .map((e) => ({ ...e, duration: e.duration - 1 }))
-        .filter((e) => e.duration > 0);
-
-      setActiveEffects(nextEffects);
-      setTurns((t) => t + 1);
-
-      // Discard current card and draw next one
-      const nextCard = deck.drawCard(currentCard);
-      setCurrentCard(nextCard);
-    },
-    [activeEffects, updateStats, checkObjectives, deck, currentCard]
-  );
-
-  const handleChoice = useCallback(
-    (dir: "left" | "right") => {
-      if (!currentCard) return;
-      resolveTurn(dir === "left" ? currentCard.left : currentCard.right);
-    },
-    [currentCard, resolveTurn]
-  );
-
-  // Memoize the preview callback to avoid unnecessary re-renders
-  const handlePreview = useCallback((side: "left" | "right" | null) => {
-    setPreviewSide(side);
-  }, []);
-
-  // Calculate Diff for StatBars based on preview
+  // Calculate preview diffs
   const currentDiffs = useMemo(() => {
-    if (!previewSide || !currentCard) return [0, 0, 0, 0];
-
+    if (!state.previewSide || !state.currentCard) return [0, 0, 0, 0];
     const choice =
-      previewSide === "left" ? currentCard.left : currentCard.right;
-
+      state.previewSide === "left"
+        ? state.currentCard.left
+        : state.currentCard.right;
     return choice.effect;
-  }, [previewSide, currentCard]);
+  }, [state.previewSide, state.currentCard]);
 
-  const cardKey = currentCard ? `card-${currentCard.id}-${turns}` : "no-card";
+  const cardKey = state.currentCard
+    ? `card-${state.currentCard.id}-${state.turns}`
+    : "no-card";
 
-  if (gameOver) {
+  // Game over state
+  if (state.gameOver) {
     return (
       <GameOverScreen
-        reason={gameOver}
-        turns={turns}
-        objectives={objectives}
-        onRestart={handleRestart}
+        reason={state.gameOver}
+        turns={state.turns}
+        objectives={state.objectives}
+        onRestart={resetGame}
         onBackToMenu={handleBackToMenu}
       />
     );
   }
 
-  if (allCompleted) {
+  // All objectives completed
+  if (state.allObjectivesCompleted) {
     return (
       <GameOverScreen
         reason="¡Has cumplido todos los objetivos del gobierno!"
-        turns={turns}
-        objectives={objectives}
-        onRestart={handleRestart}
+        turns={state.turns}
+        objectives={state.objectives}
+        onRestart={resetGame}
         onBackToMenu={handleBackToMenu}
       />
     );
@@ -154,45 +81,45 @@ export default function GameScreen({
           </h1>
           <div className="flex items-center gap-2">
             <span className="font-tech text-[8px] sm:text-[10px] text-stone-500">
-              Cartas: {deck.availableCount}/{deck.totalCount}
+              Cartas: {deckInfo.availableCount}/{deckInfo.totalCount}
             </span>
             <span className="font-tech text-[10px] sm:text-xs text-stone-400">
-              TRIMESTRE: {turns}
+              TRIMESTRE: {state.turns}
             </span>
           </div>
         </div>
 
         <StatBar
-          value={stats[0]}
+          value={state.stats[0]}
           diff={currentDiffs[0]}
-          activeEffects={activeEffects.filter((e) => e.stat === 0)}
+          activeEffects={state.activeEffects.filter((e) => e.stat === 0)}
           icon="users"
           color="text-blue-400"
           name="Opinión Pública"
           showAffects={false}
         />
         <StatBar
-          value={stats[1]}
+          value={state.stats[1]}
           diff={currentDiffs[1]}
-          activeEffects={activeEffects.filter((e) => e.stat === 1)}
+          activeEffects={state.activeEffects.filter((e) => e.stat === 1)}
           icon="coins"
           color="text-green-400"
           name="Situación Económica"
           showAffects={false}
         />
         <StatBar
-          value={stats[2]}
+          value={state.stats[2]}
           diff={currentDiffs[2]}
-          activeEffects={activeEffects.filter((e) => e.stat === 2)}
+          activeEffects={state.activeEffects.filter((e) => e.stat === 2)}
           icon="shield"
           color="text-gray-400"
           name="Defensa Nacional"
           showAffects={false}
         />
         <StatBar
-          value={stats[3]}
+          value={state.stats[3]}
           diff={currentDiffs[3]}
-          activeEffects={activeEffects.filter((e) => e.stat === 3)}
+          activeEffects={state.activeEffects.filter((e) => e.stat === 3)}
           icon="megaphone"
           color="text-yellow-400"
           name="Gremialistas"
@@ -206,7 +133,7 @@ export default function GameScreen({
           Objetivos del Gobierno
         </div>
         <div className="grid grid-cols-1 gap-1">
-          {objectives.map((obj) => (
+          {state.objectives.map((obj) => (
             <ObjectiveItem key={obj.id} obj={obj} />
           ))}
         </div>
@@ -215,9 +142,9 @@ export default function GameScreen({
       {/* Notifications */}
       <motion.div
         className="absolute top-1/2 -translate-y-[120px] sm:-translate-y-[180px] w-full flex justify-center z-20 pointer-events-none px-2"
-        key={`turnlog-${turns}`}
+        key={`turnlog-${state.turns}`}
         animate={
-          turnLog
+          state.turnLog
             ? {
                 opacity: [0, 1, 1, 0],
                 transition: { duration: 2, times: [0, 0.1, 0.9, 1] },
@@ -225,20 +152,20 @@ export default function GameScreen({
             : { opacity: 0 }
         }
       >
-        {turnLog && (
+        {state.turnLog && (
           <div className="bg-stone-900 border border-amber-500 text-amber-500 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-base font-bold font-typewriter shadow-xl effect-pill flex items-center gap-2">
-            <Zap size={14} className="sm:w-4 sm:h-4" /> {turnLog}
+            <Zap size={14} className="sm:w-4 sm:h-4" /> {state.turnLog}
           </div>
         )}
       </motion.div>
 
       {/* Card Area */}
       <div className="flex-1 w-full flex flex-col items-center justify-center relative overflow-hidden">
-        {currentCard && (
+        {state.currentCard && (
           <CardView
             key={cardKey}
-            data={currentCard}
-            characters={characters}
+            data={state.currentCard}
+            characters={state.characters}
             onResolve={handleChoice}
             onPreview={handlePreview}
           />
@@ -246,7 +173,7 @@ export default function GameScreen({
       </div>
 
       {/* Controls */}
-      {currentCard && (
+      {state.currentCard && (
         <div className="w-full max-w-md grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-4 z-10 px-2 sm:px-0">
           <button
             onClick={() => handleChoice("left")}
@@ -275,5 +202,21 @@ export default function GameScreen({
 
       <Version />
     </div>
+  );
+}
+
+export default function GameScreen({
+  cards,
+  characters,
+  objectivesPool,
+}: GameScreenProps) {
+  return (
+    <GameManagerProvider
+      cards={cards}
+      characters={characters}
+      objectivesPool={objectivesPool}
+    >
+      <GameContent />
+    </GameManagerProvider>
   );
 }

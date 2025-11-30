@@ -23,7 +23,6 @@ import {
 
 import { CardData, Character } from "@/types";
 import { useTypewriter, useIsMobile } from "@/hooks";
-import Image from "next/image";
 
 export const CardView = ({
   data,
