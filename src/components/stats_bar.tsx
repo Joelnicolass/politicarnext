@@ -73,7 +73,7 @@ export const StatBar = ({
                 ></div>
               )}
             </div>
-            <div className="relative bg-[#2a2a2a] h-2.5 sm:h-3 w-full border border-[#5a5a5a] overflow-hidden">
+            <div className="relative bg-[#2a2a2a] h-5 sm:h-5 w-full border border-[#5a5a5a] overflow-hidden">
               <div className="absolute -top-0.5 bottom-0 w-0.5 bg-white left-1/2 opacity-20 z-10" />
 
               <div
@@ -86,6 +86,13 @@ export const StatBar = ({
                 }`}
                 style={{ width: `${value}%` }}
               />
+
+              {/* Stat Name in the center */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <span className="text-[9px] sm:text-[10px] font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] tracking-wider uppercase">
+                  {name}
+                </span>
+              </div>
             </div>
           </div>
           {activeEffects.length > 0 && (
