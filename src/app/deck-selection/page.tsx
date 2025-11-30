@@ -1,5 +1,5 @@
 import { getDecks } from "@/services/actions";
-import { DeckGrid } from "@/components/DeckGrid";
+import { DeckGrid } from "@/components/deck_grid";
 
 export default async function DeckSelectionPage() {
   const decks = await getDecks();

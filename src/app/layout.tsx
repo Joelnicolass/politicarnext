@@ -5,7 +5,7 @@ import {
   Special_Elite,
 } from "next/font/google";
 import "./globals.css";
-import RootProvider from "@/providers/RootProvider";
+import RootProvider from "@/providers/root_provider";
 
 const blackOpsOne = Black_Ops_One({
   weight: "400",

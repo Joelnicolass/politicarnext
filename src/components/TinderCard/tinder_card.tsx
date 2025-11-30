@@ -11,7 +11,7 @@ import {
   DragAxis,
   DRAG_CONFIG,
   CARD_VISUAL,
-} from "./";
+} from ".";
 
 interface TinderCardRenderProps {
   /** Valor de opacidad para el indicador derecho */

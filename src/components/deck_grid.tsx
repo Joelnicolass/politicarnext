@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Deck } from "@/types";
-import { DeckCard } from "@/components/DeckCard";
+import { DeckCard } from "@/components/deck_card";
 
 interface DeckGridProps {
   decks: Deck[];
