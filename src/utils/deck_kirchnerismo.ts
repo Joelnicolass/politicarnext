@@ -2,7 +2,7 @@
 // DECK: LA DÉCADA GANADA (CFK & EL RELATO)
 // ==========================================
 
-import { CardData, Character, Objective } from "@/types/types";
+import { CardData, Character, Objective } from "@/types";
 
 // --- PERSONAJES (El Universo K) ---
 export const CFK_CHARACTERS: Record<string, Character> = {
