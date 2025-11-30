@@ -21,11 +21,13 @@ export interface DeckState {
   discard: CardData[];
 }
 
+export type Difficulty = "easy" | "medium" | "hard";
+
 export interface GameState {
   // Game progress
   turns: number;
   currentCard: CardData | null;
-
+  difficulty: Difficulty;
   // Deck state
   deck: DeckState;
   addedDeckIds: Set<string>; // Track which decks have been added

@@ -20,6 +20,7 @@ export default async function GamePage({ searchParams }: GamePageProps) {
       cards={deck.cards}
       characters={deck.characters}
       objectivesPool={deck.objectivesPool}
+      difficulty={deck.difficulty}
     />
   );
 }

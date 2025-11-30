@@ -1,5 +1,9 @@
 import { GameState, ProcessTurnPayload } from "@/types/reducer";
 import { STAT_MIN, STAT_MAX } from "../game_manager.provider";
+import {
+  applyDifficultyToEffect,
+  applyDifficultyMultiplier,
+} from "@/utils/deck.utils";
 
 export const processTurnReducer = (
   state: GameState,
@@ -9,9 +13,15 @@ export const processTurnReducer = (
 ): GameState => {
   const { choice } = action.payload;
 
+  // Apply difficulty multiplier to choice effects
+  const adjustedEffect = applyDifficultyToEffect(
+    choice.effect,
+    state.difficulty
+  );
+
   // Apply choice effects
   const newStats = state.stats.map((val, idx) => {
-    const delta = choice.effect[idx];
+    const delta = adjustedEffect[idx];
     return Math.max(STAT_MIN, Math.min(STAT_MAX, val + delta));
   }) as [number, number, number, number];
 
@@ -20,7 +30,12 @@ export const processTurnReducer = (
   let turnLog: string | null = null;
 
   if (choice.statusEffect) {
-    nextEffects.push({ ...choice.statusEffect });
+    // Apply difficulty multiplier to status effect value
+    const adjustedStatusEffect = {
+      ...choice.statusEffect,
+      val: applyDifficultyMultiplier(choice.statusEffect.val, state.difficulty),
+    };
+    nextEffects.push(adjustedStatusEffect);
     turnLog = `¡Activado: ${choice.statusEffect.name}!`;
   }
 

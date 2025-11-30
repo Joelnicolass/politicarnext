@@ -22,6 +22,7 @@ export const resetGameReducer = (
       turnLog: null,
       allObjectivesCompleted: false,
       previewSide: null,
+      previewDiffs: [0, 0, 0, 0],
       characters: action.payload.characters,
     };
   }
@@ -32,6 +33,7 @@ export const resetGameReducer = (
 
   return {
     turns: 0,
+    difficulty: state.difficulty, // Preserve selected difficulty
     deck: { available: remainingDeck, discard: [] },
     currentCard: firstCard,
     stats: INITIAL_STATS,
@@ -41,7 +43,8 @@ export const resetGameReducer = (
     allObjectivesCompleted: false,
     turnLog: null,
     previewSide: null,
+    previewDiffs: [0, 0, 0, 0],
     characters: action.payload.characters,
-    addedDeckIds: new Set(), // Reset tracking on game reset
+    addedDeckIds: new Set(),
   };
 };

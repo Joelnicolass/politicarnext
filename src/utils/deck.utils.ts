@@ -1,4 +1,6 @@
 import { CardData, Character, Objective } from "@/types";
+import { Difficulty } from "@/types/reducer";
+import { DIFFICULTY } from "./constants";
 
 export function shuffleCards(cards: CardData[]): CardData[] {
   const shuffled = [...cards];
@@ -49,4 +51,33 @@ export function filterNewObjectives(
   const filtered = newObjectives.filter((obj) => !existingIds.has(obj.id));
 
   return filtered;
+}
+
+/**
+ * Apply difficulty multiplier to an effect value
+ * Preserves the sign and increases the absolute value
+ */
+export function applyDifficultyMultiplier(
+  value: number,
+  difficulty: Difficulty
+): number {
+  if (value === 0) return 0;
+
+  const multiplied = value * DIFFICULTY[difficulty];
+  return value > 0 ? Math.ceil(multiplied) : Math.floor(multiplied);
+}
+
+/**
+ * Apply difficulty multiplier to all stats in an effect array
+ */
+export function applyDifficultyToEffect(
+  effect: [number, number, number, number],
+  difficulty: Difficulty
+): [number, number, number, number] {
+  return effect.map((val) => applyDifficultyMultiplier(val, difficulty)) as [
+    number,
+    number,
+    number,
+    number
+  ];
 }

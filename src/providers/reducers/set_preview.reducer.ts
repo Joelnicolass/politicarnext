@@ -1,4 +1,5 @@
 import { GameState, SetPreviewPayload } from "@/types/reducer";
+import { applyDifficultyToEffect } from "@/utils/deck.utils";
 
 export const setPreviewReducer = (
   state: GameState,
@@ -12,7 +13,10 @@ export const setPreviewReducer = (
   if (previewSide && state.currentCard) {
     const choice =
       previewSide === "left" ? state.currentCard.left : state.currentCard.right;
-    previewDiffs = choice.effect;
+    // Apply difficulty multiplier to preview diffs
+
+    // previewDiffs = choice.effect; -> ByPass difficulty application
+    previewDiffs = applyDifficultyToEffect(choice.effect, state.difficulty);
   }
 
   return {

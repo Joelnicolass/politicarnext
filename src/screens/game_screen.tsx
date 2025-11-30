@@ -19,6 +19,7 @@ interface GameScreenProps {
   cards: CardData[];
   characters: Record<string, Character>;
   objectivesPool: Omit<Objective, "completed">[];
+  difficulty: "easy" | "medium" | "hard";
 }
 
 function GameContent() {
@@ -198,12 +199,14 @@ export default function GameScreen({
   cards,
   characters,
   objectivesPool,
+  difficulty,
 }: GameScreenProps) {
   return (
     <GameManagerProvider
       cards={cards}
       characters={characters}
       objectivesPool={objectivesPool}
+      difficulty={difficulty}
     >
       <GameContent />
     </GameManagerProvider>

@@ -6,7 +6,7 @@ export const TESTING_DECK_NARRATIVE: Deck = {
   id: "testing_narrative",
   name: "",
   description: "",
-  difficulty: "easy",
+  difficulty: "hard",
   thumbnail: "",
   cards: [
     {
@@ -65,20 +65,20 @@ export const TESTING_DECK: Deck = {
   id: "testing",
   name: "",
   description: "",
-  difficulty: "easy",
+  difficulty: "hard",
   thumbnail: "",
   cards: [
     {
       id: 99990,
       left: {
-        effect: [0, 0, 0, 0],
-        text: "NO EFFECTS",
+        effect: [1, 1, 1, 1],
+        text: "1 1 1 1",
         tags: ["test"],
         statusEffect: undefined,
       },
       right: {
-        effect: [0, 0, 0, 0],
-        text: "NO EFFECTS",
+        effect: [-1, -1, -1, -1],
+        text: "-1 -1 -1 -1",
         tags: ["test"],
         statusEffect: undefined,
       },

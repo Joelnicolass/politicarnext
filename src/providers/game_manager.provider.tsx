@@ -12,6 +12,7 @@ import {
   GameAction,
   Action,
   GameContextValue,
+  Difficulty,
 } from "@/types/reducer";
 import { initGameActionReducer } from "./reducers/init_game.reducer";
 import { drawCardReducer } from "./reducers/draw_card.reducer";
@@ -77,6 +78,7 @@ interface GameManagerProviderProps {
   cards: CardData[];
   characters: Record<string, Character>;
   objectivesPool: Omit<Objective, "completed">[];
+  difficulty: Difficulty;
 }
 
 export function GameManagerProvider({
@@ -84,10 +86,12 @@ export function GameManagerProvider({
   cards,
   characters,
   objectivesPool,
+  difficulty,
 }: GameManagerProviderProps) {
   const initialState: GameState = {
     turns: 0,
     currentCard: null,
+    difficulty,
     deck: { available: [], discard: [] },
     stats: INITIAL_STATS,
     gameOver: null,
