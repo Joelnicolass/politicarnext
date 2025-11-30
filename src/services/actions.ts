@@ -1,32 +1,25 @@
-import { Deck, DeckResponse } from "@/types";
-import { TESTING_DECK } from "@/app/decks/__DECK__TESTING";
-import {
-  CRISIS_2000_CARDS,
-  CRISIS_2000_CHARACTERS,
-  CRISIS_2000_OBJECTIVES_POOL,
-} from "@/app/decks/deck_crisis_2000";
-import {
-  DEFAULT_CARDS,
-  DEFAULT_CHARACTERS,
-  DEFAULT_OBJECTIVES,
-} from "@/app/decks/deck_default";
 import {
   CFK_CARDS,
   CFK_CHARACTERS,
   CFK_OBJECTIVES_POOL,
-} from "@/app/decks/deck_kirchnerismo";
-import {
+  CRISIS_2000_CARDS,
+  CRISIS_2000_CHARACTERS,
+  CRISIS_2000_OBJECTIVES_POOL,
+  DEFAULT_CARDS,
+  DEFAULT_CHARACTERS,
+  DEFAULT_OBJECTIVES,
   MENEM_CARDS,
   MENEM_CHARACTERS,
   MENEM_OBJECTIVES_POOL,
-} from "@/app/decks/deck_menem";
-import { QATAR_CARDS, QATAR_CHARACTERS } from "@/app/decks/deck_qatar";
-import { QATAR_OBJECTIVES } from "../app/decks/deck_qatar";
-import {
+  QATAR_CARDS,
+  QATAR_CHARACTERS,
+  QATAR_OBJECTIVES,
+  TESTING_DECK,
   VLLC_CARDS,
   VLLC_CHARACTERS,
   VLLC_OBJECTIVES_POOL,
-} from "@/app/decks/deck_viva_la_libertad";
+} from "@/decks";
+import { Deck, DeckResponse } from "@/types";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
@@ -80,17 +73,6 @@ function getLocalDecks(): Deck[] {
       unlocked: true,
     },
     {
-      id: "qatar22",
-      name: "Mundial 2022",
-      description: "El deck del mundial de Messi y del Beto",
-      difficulty: "easy",
-      thumbnail: "🏆",
-      cards: QATAR_CARDS,
-      characters: QATAR_CHARACTERS,
-      objectivesPool: QATAR_OBJECTIVES,
-      unlocked: false,
-    },
-    {
       id: "crisis",
       name: "Crisis del 2001",
       description: "Sobreviví a la peor crisis económica",
@@ -99,6 +81,17 @@ function getLocalDecks(): Deck[] {
       cards: CRISIS_2000_CARDS,
       characters: CRISIS_2000_CHARACTERS,
       objectivesPool: CRISIS_2000_OBJECTIVES_POOL,
+      unlocked: true,
+    },
+    {
+      id: "qatar22",
+      name: "Mundial 2022",
+      description: "El deck del mundial de Messi y del Beto",
+      difficulty: "easy",
+      thumbnail: "🏆",
+      cards: QATAR_CARDS,
+      characters: QATAR_CHARACTERS,
+      objectivesPool: QATAR_OBJECTIVES,
       unlocked: false,
     },
     {
