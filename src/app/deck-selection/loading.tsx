@@ -1,4 +1,4 @@
-import { LoadingSpinner } from "@/components/loading_spinner";
+import { LoadingSpinner } from "@/components/common/loading_spinner";
 
 export default function Loading() {
   return <LoadingSpinner text="Cargando escenarios..." />;

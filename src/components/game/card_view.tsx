@@ -20,7 +20,7 @@ import {
   SwipeSide,
   SwipeSideOrNull,
   CARD_VISUAL,
-} from "@/components/TinderCard";
+} from "@/components/tinder_card";
 
 import { CardData, Character } from "@/types";
 import { useTypewriter, useIsMobile } from "@/hooks";

@@ -30,8 +30,8 @@ export default function MenuScreen() {
       label: "Creador de Decks",
       icon: undefined,
       color: "bg-yellow-600 hover:bg-yellow-500",
-      action: () => console.log("Próximamente..."),
-      disabled: true,
+      action: () => router.push("/deck-creator"),
+      disabled: false,
     },
     {
       id: "info",

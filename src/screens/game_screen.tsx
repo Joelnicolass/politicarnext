@@ -3,10 +3,10 @@
 import { ArrowLeft, ArrowRight, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { CardData, Character, Objective } from "@/types";
-import { CardView } from "@/components/card_view";
-import { GameOverScreen } from "@/components/game_over";
-import { ObjectiveItem } from "@/components/objectives_item";
-import { StatBar } from "@/components/stats_bar";
+import { CardView } from "@/components/game/card_view";
+import { GameOverScreen } from "@/components/game/game_over";
+import { ObjectiveItem } from "@/components/game/objectives_item";
+import { StatBar } from "@/components/game/stats_bar";
 import { motion } from "framer-motion";
 import { APP_NAME } from "@/utils/constants";
 import {
