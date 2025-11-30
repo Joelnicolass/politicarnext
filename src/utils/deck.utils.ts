@@ -81,3 +81,50 @@ export function applyDifficultyToEffect(
     number
   ];
 }
+
+/**
+ * Draws a new card from the deck
+ * Handles reshuffling if needed
+ */
+export function drawCardFromDeck(
+  available: CardData[],
+  discard: CardData[],
+  cardToDiscard?: CardData | null
+): {
+  nextCard: CardData | null;
+  updatedAvailable: CardData[];
+  updatedDiscard: CardData[];
+} {
+  let updatedAvailable = [...available];
+  let updatedDiscard = [...discard];
+
+  // Discard current card if provided
+  if (cardToDiscard) {
+    updatedDiscard.push(cardToDiscard);
+  }
+
+  // Reshuffle if no cards available
+  if (updatedAvailable.length === 0 && updatedDiscard.length > 0) {
+    updatedAvailable = shuffleCards(updatedDiscard);
+    updatedDiscard = [];
+  }
+
+  // Draw a random card
+  if (updatedAvailable.length === 0) {
+    return {
+      nextCard: null,
+      updatedAvailable: [],
+      updatedDiscard: [],
+    };
+  }
+
+  const randomIdx = Math.floor(Math.random() * updatedAvailable.length);
+  const nextCard = updatedAvailable[randomIdx];
+  updatedAvailable = updatedAvailable.filter((_, idx) => idx !== randomIdx);
+
+  return {
+    nextCard,
+    updatedAvailable,
+    updatedDiscard,
+  };
+}

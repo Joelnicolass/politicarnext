@@ -6,7 +6,7 @@ import React, {
   ReactNode,
   useMemo,
 } from "react";
-import { CardData, Character, Objective, Choice, Deck } from "@/types";
+import { CardData, Character, Objective } from "@/types";
 import {
   GameState,
   GameAction,
@@ -15,7 +15,6 @@ import {
   Difficulty,
 } from "@/types/reducer";
 import { initGameActionReducer } from "./reducers/init_game.reducer";
-import { drawCardReducer } from "./reducers/draw_card.reducer";
 import { addCardsReducer } from "./reducers/add_cards.reducer";
 import { addDeckReducer } from "./reducers/add_deck.reducer";
 import { processTurnReducer } from "./reducers/process_turn.reducer";
@@ -33,9 +32,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case Action.INIT_GAME:
       return initGameActionReducer(state, action);
-
-    case Action.DRAW_CARD:
-      return drawCardReducer(state, action);
 
     case Action.ADD_CARDS:
       return addCardsReducer(state, action);
@@ -129,58 +125,6 @@ export function GameManagerProvider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Process special effects (integrated into reducer actions)
-  const processSpecialEffect = useCallback(
-    (choice: Choice) => {
-      if (!choice.specialEffect) return;
-
-      const { specialEffect } = choice;
-
-      switch (specialEffect.type) {
-        case "add_deck": {
-          const deck = specialEffect.data as Deck;
-
-          if (!deck || !deck.cards || deck.cards.length === 0) return;
-          if (state.addedDeckIds.has(deck.id)) return;
-
-          dispatch({
-            type: Action.ADD_DECK,
-            payload: {
-              id: deck.id,
-              cards: deck.cards,
-              characters: deck.characters,
-              objectives: deck.objectivesPool,
-            },
-          });
-
-          break;
-        }
-
-        case "add_cards": {
-          const data = specialEffect.data as { cards?: CardData[] };
-          if (data.cards)
-            dispatch({ type: Action.ADD_CARDS, payload: data.cards });
-
-          break;
-        }
-
-        case "add_objectives": {
-          const data = specialEffect.data as {
-            objectives?: Omit<Objective, "completed">[];
-          };
-          if (data.objectives)
-            dispatch({ type: Action.ADD_OBJECTIVES, payload: data.objectives });
-
-          break;
-        }
-
-        default:
-          break;
-      }
-    },
-    [state.addedDeckIds]
-  );
-
   // Handle choice (left or right)
   const handleChoice = useCallback(
     (dir: "left" | "right") => {
@@ -188,19 +132,13 @@ export function GameManagerProvider({
       const choice =
         dir === "left" ? state.currentCard.left : state.currentCard.right;
 
-      // Process special effect FIRST (adds cards to deck)
-      processSpecialEffect(choice);
-
-      // Process the turn (applies stats, effects, objectives)
-      dispatch({ type: Action.PROCESS_TURN, payload: { choice } });
-
-      // Draw next card (after all state updates)
+      // Process the turn (applies stats, effects, objectives, special effects, and draws next card)
       dispatch({
-        type: Action.DRAW_CARD,
-        payload: { cardToDiscard: state.currentCard },
+        type: Action.PROCESS_TURN,
+        payload: { choice, currentCard: state.currentCard },
       });
     },
-    [state.currentCard, processSpecialEffect]
+    [state.currentCard]
   );
 
   // Handle preview

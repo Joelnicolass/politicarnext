@@ -112,10 +112,10 @@ export const TESTING_DECK: Deck = {
       },
       right: {
         effect: [0, 0, 0, 0],
-        text: "STATUS EFFECT GOOD",
+        text: "STATUS EFFECT GOOD 10",
         tags: ["test"],
         statusEffect: {
-          duration: 3,
+          duration: 10,
           name: "Test Status",
           stat: 0,
           val: 2,

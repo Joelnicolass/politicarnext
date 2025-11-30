@@ -1,32 +1,32 @@
 import { Deck, DeckResponse } from "@/types";
-import { TESTING_DECK } from "@/utils/__DECK__TESTING";
+import { TESTING_DECK } from "@/app/decks/__DECK__TESTING";
 import {
   CRISIS_2000_CARDS,
   CRISIS_2000_CHARACTERS,
   CRISIS_2000_OBJECTIVES_POOL,
-} from "@/utils/deck_crisis_2000";
+} from "@/app/decks/deck_crisis_2000";
 import {
   DEFAULT_CARDS,
   DEFAULT_CHARACTERS,
   DEFAULT_OBJECTIVES,
-} from "@/utils/deck_default";
+} from "@/app/decks/deck_default";
 import {
   CFK_CARDS,
   CFK_CHARACTERS,
   CFK_OBJECTIVES_POOL,
-} from "@/utils/deck_kirchnerismo";
+} from "@/app/decks/deck_kirchnerismo";
 import {
   MENEM_CARDS,
   MENEM_CHARACTERS,
   MENEM_OBJECTIVES_POOL,
-} from "@/utils/deck_menem";
-import { QATAR_CARDS, QATAR_CHARACTERS } from "@/utils/deck_qatar";
-import { QATAR_OBJECTIVES } from "../utils/deck_qatar";
+} from "@/app/decks/deck_menem";
+import { QATAR_CARDS, QATAR_CHARACTERS } from "@/app/decks/deck_qatar";
+import { QATAR_OBJECTIVES } from "../app/decks/deck_qatar";
 import {
   VLLC_CARDS,
   VLLC_CHARACTERS,
   VLLC_OBJECTIVES_POOL,
-} from "@/utils/deck_viva_la_libertad";
+} from "@/app/decks/deck_viva_la_libertad";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";

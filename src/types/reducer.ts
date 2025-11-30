@@ -2,7 +2,6 @@ import { CardData, Character, Choice, Objective, StatusEffect } from ".";
 
 export enum Action {
   INIT_GAME,
-  DRAW_CARD,
   PROCESS_TURN,
   ADD_CARDS,
   ADD_DECK,
@@ -59,12 +58,9 @@ export type InitGamePayload = {
   objectives: Objective[];
 };
 
-export type DrawCardPayload = {
-  cardToDiscard?: CardData | null;
-};
-
 export interface ProcessTurnPayload {
   choice: Choice;
+  currentCard: CardData;
 }
 
 export type addCardsPayload = CardData[];
@@ -97,7 +93,6 @@ export type GameAction =
       type: Action.INIT_GAME;
       payload: InitGamePayload;
     }
-  | { type: Action.DRAW_CARD; payload: DrawCardPayload }
   | { type: Action.PROCESS_TURN; payload: ProcessTurnPayload }
   | { type: Action.ADD_CARDS; payload: addCardsPayload }
   | {
