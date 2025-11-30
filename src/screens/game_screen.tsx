@@ -14,7 +14,7 @@ import {
   GameManagerProvider,
   useGameManager,
 } from "@/providers/game_manager.provider";
-import { Version } from "../components/version";
+import { AppVersion } from "@/components";
 
 interface GameScreenProps {
   cards: CardData[];
@@ -200,7 +200,7 @@ function GameContent() {
         </div>
       )}
 
-      <Version />
+      <AppVersion />
     </div>
   );
 }

@@ -5,5 +5,5 @@ export * from "./game_over";
 export * from "./loading_spinner";
 export * from "./objectives_item";
 export * from "./stats_bar";
-export * from "./version";
+export * from "./app_version";
 export * from "./TinderCard/tinder_card";

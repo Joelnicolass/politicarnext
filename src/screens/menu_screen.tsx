@@ -1,6 +1,6 @@
 "use client";
 
-import { Version } from "../components/version";
+import { AppVersion } from "@/components";
 import { APP_NAME } from "@/utils/constants";
 import { motion } from "framer-motion";
 import { Play, Trophy, Info } from "lucide-react";
@@ -87,7 +87,7 @@ export default function MenuScreen() {
         ))}
       </motion.div>
 
-      <Version />
+      <AppVersion />
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Share+Tech+Mono&family=Special+Elite&display=swap');
