@@ -158,15 +158,10 @@ export const CardView = ({
                     onError={() => setImgError(true)}
                     className="w-full h-full object-contain select-none pointer-events-none"
                   />
-                  {/* Overlay para oscurecer todos los bordes de la imagen */}
                   <div className="absolute inset-0 pointer-events-none z-10">
-                    {/* Gradiente desde arriba */}
                     <div className="absolute top-0 left-0 right-0 h-1/3 bg-linear-to-b from-black/60 via-transparent to-transparent" />
-                    {/* Gradiente desde abajo */}
                     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-                    {/* Gradiente desde la izquierda */}
                     <div className="absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-black/50 via-transparent to-transparent" />
-                    {/* Gradiente desde la derecha */}
                     <div className="absolute inset-y-0 right-0 w-1/3 bg-linear-to-l from-black/50 via-transparent to-transparent" />
                   </div>
                 </>
