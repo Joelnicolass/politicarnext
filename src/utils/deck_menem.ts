@@ -2,7 +2,7 @@
 // DECK: MENEM LO HIZO
 // ==========================================
 
-import { CardData, Character, Objective } from "@/types/types";
+import { CardData, Character, Objective } from "@/types";
 
 // --- PERSONAJES (Menem Era) ---
 export const MENEM_CHARACTERS: Record<string, Character> = {

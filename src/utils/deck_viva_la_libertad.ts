@@ -2,7 +2,7 @@
 // DECK: VIVA LA LIBERTAD CARAJO (VLLC)
 // ==========================================
 
-import { CardData, Character, Objective } from "@/types/types";
+import { CardData, Character, Objective } from "@/types";
 
 // --- PERSONAJES (La Libertad Avanza Era) ---
 export const VLLC_CHARACTERS: Record<string, Character> = {
