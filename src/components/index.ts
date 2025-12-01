@@ -4,6 +4,7 @@ export { DeckCard } from "./deck-selection/deck_card";
 export { DeckGrid } from "./deck-selection/deck_grid";
 export { GameOverScreen } from "./game/game_over";
 export { ImportDeckCard } from "./deck-selection/import_deck_card";
+export { JsonLd, getWebsiteSchema, getGameSchema } from "./common/json_ld";
 export { LoadingSpinner } from "./common/loading_spinner";
 export { ObjectiveItem } from "./game/objectives_item";
 export { StatBar } from "./game/stats_bar";
