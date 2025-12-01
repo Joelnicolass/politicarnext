@@ -65,12 +65,15 @@ export function NumericInput({
 
   return (
     <input
-      type="text"
-      inputMode="numeric"
+      inputMode="url"
+      type="tel"
+      id="numberInput"
+      placeholder="Enter number"
+      pattern="-?[0-9]+"
       value={inputValue}
       onChange={(e) => handleChange(e.target.value)}
       onBlur={handleBlur}
-      placeholder={placeholder}
+      //placeholder={placeholder}
       className={className}
     />
   );
