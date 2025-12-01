@@ -17,8 +17,8 @@ export async function GET() {
   const fontData = await fetch(fontUrl).then((res) => res.arrayBuffer());
 
   // Colores según el juego
-  const bgColor = "black";
-  const accentColor = "#991b1b";
+  const bgColor = "#991b1b";
+  const accentColor = "#dc2626";
 
   return new ImageResponse(
     (
@@ -30,7 +30,9 @@ export async function GET() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: bgColor,
+          backgroundColor: "#000",
+          backgroundImage: `radial-gradient(circle at 25% 25%, ${bgColor}22 0%, transparent 50%), 
+                           radial-gradient(circle at 75% 75%, ${accentColor}22 0%, transparent 50%)`,
         }}
       >
         <div
