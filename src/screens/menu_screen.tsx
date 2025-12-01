@@ -1,6 +1,7 @@
 "use client";
 
 import { AppVersion } from "@/components";
+import AppName from "@/components/common/app_name";
 import { APP_NAME } from "@/utils/constants";
 import { motion } from "framer-motion";
 import { Play, Trophy, Info } from "lucide-react";
@@ -50,9 +51,8 @@ export default function MenuScreen() {
         transition={{ duration: 0.8 }}
         className="text-center mb-6 sm:mb-12 px-2"
       >
-        <h1 className="font-propaganda text-4xl sm:text-6xl md:text-8xl text-red-600 tracking-tighter mb-2 sm:mb-4 drop-shadow-[0_0_30px_rgba(220,38,38,0.5)]">
-          {APP_NAME}
-        </h1>
+        <AppName name={APP_NAME} />
+
         <p className="font-typewriter text-stone-400 text-xs sm:text-sm md:text-base">
           Un simulador de política argentina
         </p>

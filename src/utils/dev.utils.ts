@@ -32,5 +32,5 @@ export const getTitle = () => {
     return "EL AJUSTE";
   }
 
-  return "El AJUSTE";
+  return "EL AJUSTE";
 };

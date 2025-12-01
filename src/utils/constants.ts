@@ -1,6 +1,6 @@
 import { getTitle } from "./dev.utils";
 
-export const VERSION = "2.3.1";
+export const VERSION = "2.3.2";
 export const APP_NAME = getTitle();
 
 // Difficulty multipliers for card effects
