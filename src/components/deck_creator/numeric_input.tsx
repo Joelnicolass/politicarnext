@@ -65,7 +65,7 @@ export function NumericInput({
 
   return (
     <input
-      inputMode="url"
+      inputMode="tel"
       type="tel"
       id="numberInput"
       placeholder="Enter number"
