@@ -6,22 +6,17 @@ const URL_CHORIPLAN = "choriplan.com.ar";
 export async function getServerTitle(): Promise<string> {
   const headersList = await headers();
 
-  // Intentar primero leer del header personalizado del middleware
-  const gameTitle = headersList.get("x-game-title");
-  if (gameTitle) return gameTitle;
-
-  // Fallback: leer del host
+  // Siempre leer el host primero para asegurar detección correcta
   const host = headersList.get("host") || "";
 
-  if (host.includes(URL_CHORIPLAN)) {
-    return "CHORIPLAN";
-  }
+  // Determinar el título basado en el host
+  const titleFromHost = getTitleByHost(host);
 
-  if (host.includes(URL_EL_AJUSTE)) {
-    return "EL AJUSTE";
-  }
+  // Los headers personalizados del middleware son un backup
+  const gameTitle = headersList.get("x-game-title");
 
-  return "EL AJUSTE";
+  // Si el middleware configuró un título, usarlo, sino usar el del host
+  return gameTitle || titleFromHost;
 }
 
 export async function getServerUrl(): Promise<string> {
