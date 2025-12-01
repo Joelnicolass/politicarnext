@@ -4,8 +4,8 @@
   "description": "Juego de cartas interactivo sobre política argentina",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1e40af",
+  "background_color": "#991b1b",
+  "theme_color": "#dc2626",
   "orientation": "portrait-primary",
   "icons": [
     {

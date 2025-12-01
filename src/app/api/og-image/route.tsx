@@ -8,9 +8,8 @@ export async function GET() {
   const gameTitle = headersList.get("x-game-title") || "EL AJUSTE";
 
   // Colores según el juego
-  const isChoriplan = gameTitle === "CHORIPLAN";
-  const bgColor = isChoriplan ? "#dc2626" : "#1e40af"; // Rojo para CHORIPLAN, Azul para EL AJUSTE
-  const accentColor = isChoriplan ? "#991b1b" : "#1e3a8a";
+  const bgColor = "#991b1b";
+  const accentColor = "#dc2626";
 
   return new ImageResponse(
     (

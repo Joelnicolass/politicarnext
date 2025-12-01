@@ -11,8 +11,8 @@ export async function GET() {
     description: `${gameTitle}: Juego de cartas interactivo sobre política argentina`,
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#1e40af",
+    background_color: "#161616",
+    theme_color: "#161616",
     orientation: "portrait-primary",
     icons: [
       {
