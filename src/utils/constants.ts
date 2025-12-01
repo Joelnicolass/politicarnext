@@ -1,5 +1,7 @@
+import { getTitle } from "./dev.utils";
+
 export const VERSION = "2.3.1";
-export const APP_NAME = "EL AJUSTE";
+export const APP_NAME = getTitle();
 
 // Difficulty multipliers for card effects
 export const DIFFICULTY = {

@@ -15,3 +15,22 @@ export const logger = (message: string | object) => {
   console.log(message);
   console.log("================");
 };
+
+export const getTitle = () => {
+  if (typeof window === "undefined") return "";
+
+  const URL_EL_AJUSTE = "elajuste.com.ar";
+  const URL_CHORIPLAN = "choriplan.com.ar";
+
+  const host = window.location.host;
+
+  if (host.includes(URL_CHORIPLAN)) {
+    return "CHORIPLAN";
+  }
+
+  if (host.includes(URL_EL_AJUSTE)) {
+    return "EL AJUSTE";
+  }
+
+  return "El AJUSTE";
+};
