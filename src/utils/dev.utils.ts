@@ -17,7 +17,7 @@ export const logger = (message: string | object) => {
 };
 
 export const getTitle = () => {
-  if (typeof window === "undefined") return "";
+  if (typeof window === "undefined") return "EL AJUSTE";
 
   const URL_EL_AJUSTE = "elajuste.com.ar";
   const URL_CHORIPLAN = "choriplan.com.ar";
