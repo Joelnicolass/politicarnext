@@ -1,17 +1,14 @@
 import { NextResponse } from "next/server";
-import { headers } from "next/headers";
+import { getServerUrl } from "@/utils/server.utils";
 
 export async function GET() {
-  const headersList = await headers();
-  const siteUrl = headersList.get("x-site-url") || "http://localhost:3000";
+  const siteUrl = await getServerUrl();
 
-  const robotsTxt = `# https://www.robotstxt.org/robotstxt.html
-User-agent: *
+  const robotsTxt = `User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /game-imported
 
-# Sitemap dinámico según dominio
 Sitemap: ${siteUrl}/sitemap.xml`;
 
   return new NextResponse(robotsTxt, {

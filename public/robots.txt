@@ -1,8 +1,0 @@
-# https://www.robotstxt.org/robotstxt.html
-User-agent: *
-Allow: /
-Disallow: /api/
-Disallow: /game-imported
-
-# Sitemap dinámico - se genera según el dominio actual
-Sitemap: /sitemap.xml
