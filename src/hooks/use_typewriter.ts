@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect, useRef } from "react";
 import { isMobileDevice } from "@/lib/utils";
+import SoundManager from "@/services/sound_manager";
 
 interface TypewriterOptions {
   speed?: number;
@@ -47,6 +48,13 @@ export function useTypewriter(text: string, options?: TypewriterOptions) {
         return text.slice(0, nextIndex);
       });
     }, speed);
+
+    if (!isComplete) {
+      if ((displayedText.length / charsPerTick) % 5 === 0) {
+        const SM = SoundManager.getInstance();
+        SM.playTypewriter();
+      }
+    }
 
     return () => clearInterval(interval);
   }, [

@@ -36,7 +36,7 @@ class SoundManager {
 
     try {
       // Crear UNA SOLA instancia de audio para typewriter
-      const typewriterAudio = new Audio("/sounds/typewriter_1.wav");
+      const typewriterAudio = new Audio("/sounds/typewriter_2.wav");
       typewriterAudio.preload = "auto";
       typewriterAudio.volume = 0.3;
       this.audioInstances.set("typewriter", typewriterAudio);
@@ -58,7 +58,7 @@ class SoundManager {
 
     try {
       // Variación de pitch entre 0.9 y 1.1
-      audio.playbackRate = 0.9 + Math.random() * 0.2;
+      audio.playbackRate = 1 + Math.random() * 0.2;
 
       // Variación de volumen entre 0.2 y 0.35
       audio.volume = 0.2 + Math.random() * 0.15;
