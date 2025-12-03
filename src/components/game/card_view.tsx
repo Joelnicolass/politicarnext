@@ -45,7 +45,9 @@ export const CardView = ({
   const isMobile = useIsMobile();
 
   // Typewriter effect for card text
-  const { displayedText } = useTypewriter(data.text, 40);
+  const { displayedText } = useTypewriter(data.text, 40, {
+    playSound: true,
+  });
 
   // Track which side is being swiped on mobile
   const [swipeDirection, setSwipeDirection] = useState<SwipeSide | null>(null);
