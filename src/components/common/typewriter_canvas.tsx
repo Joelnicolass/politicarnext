@@ -17,7 +17,7 @@ interface TypewriterCanvasProps {
 export function TypewriterCanvas({
   text,
   speed = 30,
-  fontSize = 16,
+  fontSize = 14,
   fontFamily = "Special Elite",
   color = "#1c1917",
   playSound = false,
@@ -149,7 +149,11 @@ export function TypewriterCanvas({
           }
 
           // Reproducir sonido si avanzamos y es un carácter válido
-          if (shouldPlaySound && soundManagerRef.current) {
+          if (
+            shouldPlaySound &&
+            soundManagerRef.current &&
+            currentIndexRef.current % 3 === 0
+          ) {
             for (let i = currentIndexRef.current; i < nextIndex; i++) {
               const char = text[i];
               if (char && char.trim()) {
