@@ -48,7 +48,7 @@ export const CardView = ({
   const { displayedText } = useTypewriter(data.text, {
     speed: 30,
     charsPerTick: 1,
-    charsPerTickMobile: 4,
+    charsPerTickMobile: 2,
   });
 
   // Track which side is being swiped on mobile
