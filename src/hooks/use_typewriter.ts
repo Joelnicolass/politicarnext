@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect, useRef } from "react";
 import { isMobileDevice } from "@/lib/utils";
-import SoundManager from "@/services/sound_manager";
 
 interface TypewriterOptions {
   speed?: number;
@@ -14,34 +13,14 @@ export function useTypewriter(text: string, options?: TypewriterOptions) {
   const [isComplete, setIsComplete] = useState(false);
   const textRef = useRef(text);
 
-  // Efecto 1: Detectar cambio de texto y resetear
   useEffect(() => {
     if (textRef.current !== text) {
       textRef.current = text;
       setDisplayedText("");
       setIsComplete(false);
     }
-
-    const playSound = async () => {
-      const delay = (delayMs: number) =>
-        new Promise((resolve) => setTimeout(resolve, delayMs));
-      const SM = SoundManager.getInstance();
-
-      SM.playTypewriter();
-      await delay(200);
-      SM.playTypewriter();
-      await delay(200);
-      SM.playTypewriter();
-      await delay(500);
-      SM.playTypewriter();
-      await delay(200);
-      SM.playTypewriter();
-    };
-
-    playSound();
   }, [text]);
 
-  // Efecto 2: Animar el typewriter
   useEffect(() => {
     if (displayedText.length >= text.length) {
       if (!isComplete) {
