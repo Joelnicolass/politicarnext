@@ -1,67 +1,62 @@
-import { useState, useEffect } from "react";
-import SoundManager from "@/services/sound_manager";
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useState, useEffect, useRef } from "react";
+import { isMobileDevice } from "@/lib/utils";
 
-// Detectar si es móvil de forma simple y performante
-const isMobileDevice = () => {
-  if (typeof window === "undefined") return false;
-  return (
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    ) || window.innerWidth < 768
-  );
-};
+interface TypewriterOptions {
+  speed?: number;
+  charsPerTick?: number;
+  charsPerTickMobile?: number;
+}
 
-export function useTypewriter(
-  text: string,
-  speed: number = 30,
-  options?: {
-    playSound?: boolean;
-  }
-) {
+export function useTypewriter(text: string, options?: TypewriterOptions) {
   const [displayedText, setDisplayedText] = useState("");
   const [isComplete, setIsComplete] = useState(false);
+  const textRef = useRef(text);
 
+  // Efecto 1: Detectar cambio de texto y resetear
   useEffect(() => {
-    setDisplayedText("");
-    setIsComplete(false);
-    let currentIndex = 0;
+    if (textRef.current !== text) {
+      textRef.current = text;
+      setDisplayedText("");
+      setIsComplete(false);
+    }
+  }, [text]);
 
-    // En móviles, deshabilitar sonidos completamente para mejor performance
+  // Efecto 2: Animar el typewriter
+  useEffect(() => {
+    if (displayedText.length >= text.length) {
+      if (!isComplete) {
+        setIsComplete(true);
+      }
+      return;
+    }
+
+    const speed = options?.speed ?? 30;
     const isMobile = isMobileDevice();
-    const shouldPlaySound = options?.playSound && !isMobile;
 
-    // Obtener la instancia única del SoundManager solo si vamos a usar sonido
-    const soundManager = shouldPlaySound ? SoundManager.getInstance() : null;
-
-    // Contador para throttling de sonidos (solo en desktop)
-    let soundCounter = 0;
+    const charsPerTick = isMobile
+      ? options?.charsPerTickMobile ?? 4
+      : options?.charsPerTick ?? 1;
 
     const interval = setInterval(() => {
-      if (currentIndex < text.length) {
-        setDisplayedText(text.slice(0, currentIndex + 1));
-
-        // Reproducir sonido solo en desktop y con throttling (cada 2 letras)
-        if (shouldPlaySound && soundManager) {
-          const char = text[currentIndex];
-          if (char && char.trim()) {
-            soundCounter++;
-            // Solo reproducir cada 2 letras para reducir carga
-            if (soundCounter >= 2) {
-              soundCounter = 0;
-              soundManager.playTypewriter();
-            }
-          }
+      setDisplayedText((prev) => {
+        if (prev.length >= text.length) {
+          return prev;
         }
-
-        currentIndex++;
-      } else {
-        setIsComplete(true);
-        clearInterval(interval);
-      }
+        const nextIndex = Math.min(prev.length + charsPerTick, text.length);
+        return text.slice(0, nextIndex);
+      });
     }, speed);
 
     return () => clearInterval(interval);
-  }, [text, speed, options?.playSound]);
+  }, [
+    text,
+    displayedText.length,
+    isComplete,
+    options?.speed,
+    options?.charsPerTick,
+    options?.charsPerTickMobile,
+  ]);
 
   return { displayedText, isComplete };
 }
