@@ -23,7 +23,7 @@ import {
 } from "@/components/tinder_card";
 
 import { CardData, Character } from "@/types";
-import { useTypewriter, useIsMobile, useSound } from "@/hooks";
+import { useTypewriter, useIsMobile } from "@/hooks";
 
 export const CardView = ({
   data,
@@ -43,18 +43,9 @@ export const CardView = ({
   };
   const character = characters[data.speaker] || defaultCharacter;
   const isMobile = useIsMobile();
-  const { playTypewriter } = useSound();
 
   // Typewriter effect for card text
-  const { displayedText } = useTypewriter(data.text, 40, {
-    playSound: true,
-    onTypeLetter: (letter: string, index: number) => {
-      if (!letter.trim()) return; // No reproducir sonido para espacios
-      if (index % 2 === 0) return; // Reducir frecuencia de sonido
-
-      playTypewriter();
-    },
-  });
+  const { displayedText } = useTypewriter(data.text, 40);
 
   // Track which side is being swiped on mobile
   const [swipeDirection, setSwipeDirection] = useState<SwipeSide | null>(null);
