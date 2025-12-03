@@ -17,6 +17,8 @@ export const logger = (message: string | object) => {
 };
 
 export const getTitle = () => {
+  let EXPERIMENTAL = false;
+
   if (typeof window === "undefined") return "EL AJUSTE";
 
   const URL_EL_AJUSTE = "elajuste.com.ar";
@@ -24,13 +26,17 @@ export const getTitle = () => {
 
   const host = window.location.host;
 
+  if (host.includes("experimental")) {
+    EXPERIMENTAL = true;
+  }
+
   if (host.includes(URL_CHORIPLAN)) {
-    return "CHORIPLAN";
+    return "CHORIPLAN" + (EXPERIMENTAL ? " EXPERIMENTAL" : "");
   }
 
   if (host.includes(URL_EL_AJUSTE)) {
-    return "EL AJUSTE";
+    return "EL AJUSTE" + (EXPERIMENTAL ? " EXPERIMENTAL" : "");
   }
 
-  return "EL AJUSTE";
+  return "EL AJUSTE" + (EXPERIMENTAL ? " EXPERIMENTAL" : "");
 };
