@@ -49,9 +49,10 @@ export const CardView = ({
   const { displayedText } = useTypewriter(data.text, 40, {
     playSound: true,
     onTypeLetter: (letter: string, index: number) => {
-      if (index % 2 === 0) {
-        playTypewriter();
-      }
+      if (!letter.trim()) return; // No reproducir sonido para espacios
+      if (index % 2 === 0) return; // Reducir frecuencia de sonido
+
+      playTypewriter();
     },
   });
 

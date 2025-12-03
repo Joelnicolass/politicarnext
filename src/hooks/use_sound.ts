@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useTransition } from "react";
 
 export type SoundType =
   | "typewriter"
@@ -15,7 +15,7 @@ interface SoundConfig {
 }
 
 const SOUND_PATHS: Partial<Record<SoundType, string>> = {
-  typewriter: "/sounds/820352__bryansaraiva__typewriter-key-press-05.wav",
+  typewriter: "/sounds/typewriter_2.wav",
   // Los demás sonidos se agregarán cuando existan los archivos
   // "swipe-left": "/sounds/swipe.wav",
   // "swipe-right": "/sounds/swipe.wav",
@@ -29,78 +29,83 @@ const audioInstances = new Map<SoundType, HTMLAudioElement>();
 
 // Pool de instancias de typewriter para reproducción simultánea
 const typewriterPool: HTMLAudioElement[] = [];
-const TYPEWRITER_POOL_SIZE = 3; // Número de instancias simultáneas
+const TYPEWRITER_POOL_SIZE = 2; // Reducido para mejor rendimiento
 let typewriterPoolIndex = 0;
 
-let initializationPromise: Promise<void> | null = null;
+// Cola de sonidos pendientes para procesar en batch
+const soundQueue: Array<() => void> = [];
+let isProcessingQueue = false;
+
+// Procesar la cola de sonidos en el siguiente frame
+function processSoundQueue() {
+  if (isProcessingQueue || soundQueue.length === 0) return;
+
+  isProcessingQueue = true;
+
+  requestAnimationFrame(() => {
+    const batch = soundQueue.splice(0, 3); // Procesar máximo 3 sonidos por frame
+    batch.forEach((fn) => fn());
+    isProcessingQueue = false;
+
+    // Si quedan más sonidos, programar el siguiente batch
+    if (soundQueue.length > 0) {
+      processSoundQueue();
+    }
+  });
+}
 
 function initializeAudio() {
-  if (initializationPromise) return initializationPromise;
+  if (typeof window === "undefined") return;
 
-  initializationPromise = new Promise((resolve) => {
-    if (typeof window === "undefined") {
-      resolve();
-      return;
-    }
+  Object.entries(SOUND_PATHS).forEach(([type, path]) => {
+    if (!path) return;
 
-    Object.entries(SOUND_PATHS).forEach(([type, path]) => {
-      if (!path) return;
-
-      try {
-        // Para typewriter, crear un pool de instancias
-        if (type === "typewriter") {
-          for (let i = 0; i < TYPEWRITER_POOL_SIZE; i++) {
-            const audio = new Audio(path);
-            audio.preload = "auto";
-            audio.volume = 0.5;
-
-            audio.addEventListener("error", () => {
-              // Error silencioso
-            });
-
-            typewriterPool.push(audio);
-          }
-        } else {
-          // Para otros sonidos, usar instancia única
-          if (audioInstances.has(type as SoundType)) return;
-
+    try {
+      // Para typewriter, crear un pool de instancias
+      if (type === "typewriter") {
+        for (let i = 0; i < TYPEWRITER_POOL_SIZE; i++) {
           const audio = new Audio(path);
           audio.preload = "auto";
-
-          if (type === "background-music") {
-            audio.loop = true;
-          }
 
           audio.addEventListener("error", () => {
             // Error silencioso
           });
 
-          audioInstances.set(type as SoundType, audio);
+          typewriterPool.push(audio);
         }
-      } catch {
-        // Error silencioso al crear el audio
+      } else {
+        // Para otros sonidos, usar instancia única
+        if (audioInstances.has(type as SoundType)) return;
+
+        const audio = new Audio(path);
+        audio.preload = "auto";
+
+        if (type === "background-music") {
+          audio.loop = true;
+        }
+
+        audio.addEventListener("error", () => {
+          // Error silencioso
+        });
+
+        audioInstances.set(type as SoundType, audio);
       }
-    });
-
-    resolve();
+    } catch {
+      // Error silencioso al crear el audio
+    }
   });
+}
 
-  return initializationPromise;
+// Inicializar una sola vez cuando se carga el módulo
+if (typeof window !== "undefined") {
+  initializeAudio();
 }
 
 export function useSound() {
   const [isMuted, setIsMuted] = useState(false);
   const [musicVolume, setMusicVolume] = useState(0.3);
   const [sfxVolume, setSfxVolume] = useState(0.5);
-  const isInitialized = useRef(false);
-
-  // Inicializar audio una sola vez
-  useEffect(() => {
-    if (!isInitialized.current) {
-      initializeAudio();
-      isInitialized.current = true;
-    }
-  }, []);
+  const [isPending, startTransition] = useTransition();
 
   // Actualizar volúmenes cuando cambian
   useEffect(() => {
@@ -144,7 +149,7 @@ export function useSound() {
         audio.play().catch(() => {
           // Error silencioso - algunos navegadores bloquean autoplay
         });
-      } catch (error) {
+      } catch {
         // Error silencioso
       }
     },
@@ -158,7 +163,7 @@ export function useSound() {
     try {
       audio.pause();
       audio.currentTime = 0;
-    } catch (error) {
+    } catch {
       // Error silencioso
     }
   }, []);
@@ -175,27 +180,30 @@ export function useSound() {
   const playTypewriter = useCallback(() => {
     if (isMuted || typewriterPool.length === 0) return;
 
-    try {
-      // Obtener la siguiente instancia del pool (round-robin)
-      const audio = typewriterPool[typewriterPoolIndex];
-      typewriterPoolIndex = (typewriterPoolIndex + 1) % typewriterPool.length;
+    // Agregar a la cola en lugar de reproducir inmediatamente
+    soundQueue.push(() => {
+      try {
+        // Obtener la siguiente instancia del pool (round-robin)
+        const audio = typewriterPool[typewriterPoolIndex];
+        typewriterPoolIndex = (typewriterPoolIndex + 1) % typewriterPool.length;
 
-      // Variación aleatoria de pitch (playbackRate) entre 0.85 y 1.15
-      const pitchVariation = 0.8 + Math.random() * 0.3;
+        const pitchVariation = 1 + Math.random() * 0.2;
+        const volumeVariation = (0.2 + Math.random() * 0.1) * sfxVolume;
 
-      // Variación aleatoria de volumen entre 0.2 y 0.4 del volumen base de SFX
-      const volumeVariation = (0.2 + Math.random() * 0.2) * sfxVolume;
+        audio.volume = volumeVariation;
+        audio.playbackRate = pitchVariation;
+        audio.currentTime = 0;
 
-      audio.volume = volumeVariation;
-      audio.playbackRate = pitchVariation;
-      audio.currentTime = 0;
-
-      audio.play().catch(() => {
+        audio.play().catch(() => {
+          // Error silencioso
+        });
+      } catch {
         // Error silencioso
-      });
-    } catch (error) {
-      // Error silencioso
-    }
+      }
+    });
+
+    // Procesar la cola de forma no bloqueante
+    processSoundQueue();
   }, [isMuted, sfxVolume]);
 
   const playStatusEffect = useCallback(() => {
@@ -215,8 +223,10 @@ export function useSound() {
   }, [stop]);
 
   const toggleMute = useCallback(() => {
-    setIsMuted((prev) => !prev);
-  }, []);
+    startTransition(() => {
+      setIsMuted((prev) => !prev);
+    });
+  }, [startTransition]);
 
   return {
     // Métodos de reproducción
@@ -233,6 +243,7 @@ export function useSound() {
     isMuted,
     toggleMute,
     setIsMuted,
+    isPending, // Para mostrar indicador de carga si es necesario
 
     // Volúmenes
     musicVolume,
