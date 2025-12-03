@@ -23,7 +23,8 @@ import {
 } from "@/components/tinder_card";
 
 import { CardData, Character } from "@/types";
-import { useTypewriter, useIsMobile } from "@/hooks";
+import { useIsMobile } from "@/hooks";
+import { TypewriterCanvas } from "@/components/common";
 
 export const CardView = ({
   data,
@@ -43,13 +44,6 @@ export const CardView = ({
   };
   const character = characters[data.speaker] || defaultCharacter;
   const isMobile = useIsMobile();
-
-  // Typewriter effect for card text
-  const { displayedText } = useTypewriter(data.text, {
-    speed: 30,
-    charsPerTick: 1,
-    charsPerTickMobile: 2,
-  });
 
   // Track which side is being swiped on mobile
   const [swipeDirection, setSwipeDirection] = useState<SwipeSide | null>(null);
@@ -173,12 +167,17 @@ export const CardView = ({
               </span>
             </div>
 
-            {/* Texto con efecto typewriter */}
+            {/* Texto con efecto typewriter usando Canvas */}
             <div className="flex-1 flex items-center justify-center pointer-events-none overflow-hidden">
-              <p className="font-typewriter text-sm sm:text-lg leading-snug text-center font-bold px-1 sm:px-2 select-none line-clamp-4 sm:line-clamp-none">
-                {displayedText}
-                <span className="animate-pulse">|</span>
-              </p>
+              <TypewriterCanvas
+                text={data.text}
+                speed={30}
+                fontSize={isMobile ? 14 : 18}
+                fontFamily="Special Elite"
+                color="#1c1917"
+                playSound={true}
+                className="w-full h-full"
+              />
             </div>
 
             <div className="mt-2 sm:mt-4 flex justify-between text-[10px] sm:text-xs font-mono uppercase text-stone-500 border-t border-stone-400 pt-1.5 sm:pt-2 pointer-events-none">
