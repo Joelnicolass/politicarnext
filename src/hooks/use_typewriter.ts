@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function useTypewriter(
   text: string,
@@ -6,87 +6,63 @@ export function useTypewriter(
   options?: {
     playSound?: boolean;
     onTypeLetter?: (letter: string, index: number) => void;
+    soundThrottle?: number; // Reproducir sonido cada N letras (por defecto 2)
   }
 ) {
   const [displayedText, setDisplayedText] = useState("");
   const [isComplete, setIsComplete] = useState(false);
   const optionsRef = useRef(options);
-  const animationFrameRef = useRef<number | undefined>(undefined);
+  const soundCounterRef = useRef(0);
 
   // Actualizar la ref cuando cambien las opciones
   useEffect(() => {
     optionsRef.current = options;
   }, [options]);
 
-  // Memoizar el texto para evitar re-renders innecesarios
-  const memoizedText = useMemo(() => text, [text]);
-
   useEffect(() => {
     setDisplayedText("");
     setIsComplete(false);
+    soundCounterRef.current = 0;
     let currentIndex = 0;
-    let lastTime = performance.now();
 
-    const typeNextChar = (currentTime: number) => {
-      const elapsed = currentTime - lastTime;
+    const interval = setInterval(() => {
+      if (currentIndex < text.length) {
+        const newText = text.slice(0, currentIndex + 1);
+        setDisplayedText(newText);
 
-      if (elapsed >= speed) {
-        if (currentIndex < memoizedText.length) {
-          const newText = memoizedText.slice(0, currentIndex + 1);
+        // Llamar al callback de sonido con throttling
+        const opts = optionsRef.current;
+        const addedChar = text[currentIndex];
+        const throttle = opts?.soundThrottle ?? 2; // Por defecto cada 2 letras
 
-          // Usar requestIdleCallback si está disponible, sino requestAnimationFrame
-          if ("requestIdleCallback" in window) {
-            requestIdleCallback(
-              () => {
-                setDisplayedText(newText);
-              },
-              { timeout: speed }
-            );
-          } else {
-            setDisplayedText(newText);
+        if (
+          opts?.playSound &&
+          opts?.onTypeLetter &&
+          addedChar &&
+          addedChar.trim()
+        ) {
+          soundCounterRef.current++;
+
+          // Solo reproducir sonido cada N letras para mejor rendimiento
+          if (soundCounterRef.current >= throttle) {
+            soundCounterRef.current = 0;
+            try {
+              opts.onTypeLetter(addedChar, currentIndex);
+            } catch (error) {
+              console.warn("Error playing typewriter sound:", error);
+            }
           }
-
-          // Llamar al callback de sonido si está habilitado
-          const opts = optionsRef.current;
-          const addedChar = memoizedText[currentIndex];
-          if (
-            opts?.playSound &&
-            opts?.onTypeLetter &&
-            addedChar &&
-            addedChar.trim()
-          ) {
-            // Llamar al sonido de forma asíncrona para no bloquear
-            queueMicrotask(() => {
-              try {
-                opts.onTypeLetter?.(addedChar, currentIndex);
-              } catch (error) {
-                console.warn("Error playing typewriter sound:", error);
-              }
-            });
-          }
-
-          currentIndex++;
-          lastTime = currentTime;
-        } else {
-          setIsComplete(true);
-          return; // Detener la animación
         }
+
+        currentIndex++;
+      } else {
+        setIsComplete(true);
+        clearInterval(interval);
       }
+    }, speed);
 
-      // Continuar la animación
-      animationFrameRef.current = requestAnimationFrame(typeNextChar);
-    };
-
-    // Iniciar la animación
-    animationFrameRef.current = requestAnimationFrame(typeNextChar);
-
-    return () => {
-      // Cancelar la animación al desmontar
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [memoizedText, speed]);
+    return () => clearInterval(interval);
+  }, [text, speed]);
 
   return { displayedText, isComplete };
 }
