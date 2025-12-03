@@ -22,6 +22,7 @@ import { addObjectiveReducer } from "./reducers/add_objective.reducer";
 import { addCharactersReducer } from "./reducers/add_characters.reducer";
 import { setPreviewReducer } from "./reducers/set_preview.reducer";
 import { resetGameReducer } from "./reducers/reset_game.reducer";
+import { useEffectOnce } from "@/hooks";
 
 //INDICADORES -> [Opinión Pública, Situación Económica, Defensa Nacional, Gremios]
 export const INITIAL_STATS: [number, number, number, number] = [50, 50, 50, 50];
@@ -118,12 +119,11 @@ export function GameManagerProvider({
   }, [cards, objectivesPool]);
 
   // Initialize on mount
-  React.useEffect(() => {
+  useEffectOnce(() => {
     if (!state.currentCard) {
       initGame();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   // Handle choice (left or right)
   const handleChoice = useCallback(

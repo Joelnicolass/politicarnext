@@ -21,7 +21,6 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // Sincronizar estado inicial
     setIsMuted(soundManager.getMuted());
   }, [soundManager]);
 
@@ -32,9 +31,6 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-/**
- * Hook para acceder al SoundManager en cualquier componente
- */
 export function useSoundManager() {
   const context = useContext(SoundContext);
   if (!context) {
