@@ -21,6 +21,20 @@ export function useTypewriter(text: string, options?: TypewriterOptions) {
       setDisplayedText("");
       setIsComplete(false);
     }
+
+    const playSound = async () => {
+      const delay = (delayMs: number) =>
+        new Promise((resolve) => setTimeout(resolve, delayMs));
+      const SM = SoundManager.getInstance();
+
+      SM.playTypewriter();
+      await delay(200);
+      SM.playTypewriter();
+      await delay(200);
+      SM.playTypewriter();
+    };
+
+    playSound();
   }, [text]);
 
   // Efecto 2: Animar el typewriter
@@ -41,20 +55,13 @@ export function useTypewriter(text: string, options?: TypewriterOptions) {
 
     const interval = setInterval(() => {
       setDisplayedText((prev) => {
-        if (prev.length >= text.length) {
-          return prev;
-        }
+        if (prev.length >= text.length) return prev;
+
         const nextIndex = Math.min(prev.length + charsPerTick, text.length);
+
         return text.slice(0, nextIndex);
       });
     }, speed);
-
-    if (!isComplete) {
-      if ((displayedText.length / charsPerTick) % 5 === 0) {
-        const SM = SoundManager.getInstance();
-        SM.playTypewriter();
-      }
-    }
 
     return () => clearInterval(interval);
   }, [
