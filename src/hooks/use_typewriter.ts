@@ -32,6 +32,10 @@ export function useTypewriter(text: string, options?: TypewriterOptions) {
       SM.playTypewriter();
       await delay(200);
       SM.playTypewriter();
+      await delay(500);
+      SM.playTypewriter();
+      await delay(200);
+      SM.playTypewriter();
     };
 
     playSound();
